@@ -663,11 +663,11 @@ withPresentedOfferingIdentifier:(nullable NSString *)presentedOfferingIdentifier
 - (void)checkTrialOrIntroductoryPriceEligibility:(NSArray<NSString *> *)productIdentifiers
                                  completionBlock:(RCReceiveIntroEligibilityBlock)receiveEligibility {
     [self receiptData:^(NSData * _Nonnull data) {
-        RCLocalReceiptParser *receiptParser = [[RCLocalReceiptParser alloc] init];
-        [receiptParser checkTrialOrIntroductoryPriceEligibilityWithData:data
-                                                     productIdentifiers:productIdentifiers
-                                                             completion:^(NSDictionary<NSString *, NSNumber *> * _Nonnull receivedEligibility,
-                                                                          NSError * _Nullable error) {
+        IntroEligibilityCalculator *introCalculator = [[IntroEligibilityCalculator alloc] init];
+        [introCalculator checkTrialOrIntroductoryPriceEligibilityWithData:data
+                                                       productIdentifiers:productIdentifiers
+                                                               completion:^(NSDictionary<NSString *, NSNumber *> * _Nonnull receivedEligibility,
+                                                                            NSError * _Nullable error) {
             if (!error) {
                 NSMutableDictionary<NSString *, RCIntroEligibility *> *convertedEligibility = [[NSMutableDictionary alloc] init];
                 
