@@ -66,6 +66,7 @@ typedef void (^RCReceiveReceiptDataBlock)(NSData *);
 @property (nonatomic) RCIdentityManager *identityManager;
 @property (nonatomic) RCSystemInfo *systemInfo;
 @property (nonatomic) RCOperationDispatcher *operationDispatcher;
+@property (nonatomic) IntroEligibilityCalculator *introEligibilityCalculator;
 
 @end
 
@@ -224,7 +225,8 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
             [[RCSubscriberAttributesManager alloc] initWithBackend:backend
                                                        deviceCache:deviceCache];
     RCOperationDispatcher *operationDispatcher = [[RCOperationDispatcher alloc] init];
-
+    IntroEligibilityCalculator *introCalculator = [[IntroEligibilityCalculator alloc] init];
+    
     return [self initWithAppUserID:appUserID
                     requestFetcher:fetcher
                     receiptFetcher:receiptFetcher
@@ -238,7 +240,8 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
                        deviceCache:deviceCache
                    identityManager:identityManager
        subscriberAttributesManager:subscriberAttributesManager
-               operationDispatcher:operationDispatcher];
+               operationDispatcher:operationDispatcher
+        introEligibilityCalculator:introCalculator];
 }
 
 - (instancetype)initWithAppUserID:(nullable NSString *)appUserID
@@ -254,8 +257,8 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
                       deviceCache:(RCDeviceCache *)deviceCache
                   identityManager:(RCIdentityManager *)identityManager
       subscriberAttributesManager:(RCSubscriberAttributesManager *)subscriberAttributesManager
-              operationDispatcher:(RCOperationDispatcher *)operationDispatcher {
-    
+              operationDispatcher:(RCOperationDispatcher *)operationDispatcher
+       introEligibilityCalculator:(IntroEligibilityCalculator *)introEligibilityCalculator  {
     if (self = [super init]) {
         RCDebugLog(@"Debug logging enabled.");
         RCDebugLog(@"SDK Version - %@", self.class.frameworkVersion);
@@ -280,6 +283,7 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
         self.systemInfo = systemInfo;
         self.subscriberAttributesManager = subscriberAttributesManager;
         self.operationDispatcher = operationDispatcher;
+        self.introEligibilityCalculator = introEligibilityCalculator;
 
         RCReceivePurchaserInfoBlock callDelegate = ^void(RCPurchaserInfo *info, NSError *error) {
             if (info) {
@@ -664,12 +668,11 @@ withPresentedOfferingIdentifier:(nullable NSString *)presentedOfferingIdentifier
                                  completionBlock:(RCReceiveIntroEligibilityBlock)receiveEligibility {
     [self receiptData:^(NSData * _Nonnull data) {
         if (@available(iOS 12.0, *)) {
-            IntroEligibilityCalculator *introCalculator = [[IntroEligibilityCalculator alloc] init];
             NSSet *productIdentifiersSet = [[NSSet alloc] initWithArray:productIdentifiers];
-            [introCalculator checkTrialOrIntroductoryPriceEligibilityWithData:data
-                                                           productIdentifiers:productIdentifiersSet
-                                                                   completion:^(NSDictionary<NSString *, NSNumber *> * _Nonnull receivedEligibility,
-                                                                                NSError * _Nullable error) {
+            [self.introEligibilityCalculator checkTrialOrIntroductoryPriceEligibilityWithData:data
+                                                                           productIdentifiers:productIdentifiersSet
+                                                                                   completion:^(NSDictionary<NSString *, NSNumber *> * _Nonnull receivedEligibility,
+                                                                                                NSError * _Nullable error) {
                 if (!error) {
                     NSMutableDictionary<NSString *, RCIntroEligibility *> *convertedEligibility = [[NSMutableDictionary alloc] init];
                     
