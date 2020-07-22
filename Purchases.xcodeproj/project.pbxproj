@@ -45,6 +45,9 @@
 		2DDA3E4324DB06E000EDFE5B /* RCOperationDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DDA3E4124DB06E000EDFE5B /* RCOperationDispatcher.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		2DDA3E4724DB0B5400EDFE5B /* OperationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA3E4624DB0B5400EDFE5B /* OperationDispatcher.swift */; };
 		2DDA3E4824DB101C00EDFE5B /* MockOperationDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E35659EB530A5109AFAB50 /* MockOperationDispatcher.swift */; };
+		2DDE559D24C8B5E400DCB087 /* verifyReceipt.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2DDE559A24C8B5E300DCB087 /* verifyReceipt.txt */; };
+		2DDE559E24C8B5E400DCB087 /* base64encodedreceipt.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2DDE559B24C8B5E300DCB087 /* base64encodedreceipt.txt */; };
+		2DDE559F24C8B5E400DCB087 /* receiptAsData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2DDE559C24C8B5E300DCB087 /* receiptAsData.txt */; };
 		2DEB9767247DB46900A92099 /* RCISOPeriodFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DEB9766247DB46900A92099 /* RCISOPeriodFormatter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		2DEB976B247DB85400A92099 /* SKProductSubscriptionDurationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DEB976A247DB85400A92099 /* SKProductSubscriptionDurationExtensions.swift */; };
 		350FBDE91F7EEF070065833D /* RCPurchases.h in Headers */ = {isa = PBXBuildFile; fileRef = 350FBDE71F7EEF070065833D /* RCPurchases.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -240,6 +243,9 @@
 		2DD7BA4C24C63A830066B4C2 /* MockSystemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSystemInfo.swift; sourceTree = "<group>"; };
 		2DDA3E4124DB06E000EDFE5B /* RCOperationDispatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCOperationDispatcher.h; sourceTree = "<group>"; };
 		2DDA3E4624DB0B5400EDFE5B /* OperationDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationDispatcher.swift; sourceTree = "<group>"; };
+		2DDE559A24C8B5E300DCB087 /* verifyReceipt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = verifyReceipt.txt; sourceTree = "<group>"; };
+		2DDE559B24C8B5E300DCB087 /* base64encodedreceipt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = base64encodedreceipt.txt; sourceTree = "<group>"; };
+		2DDE559C24C8B5E300DCB087 /* receiptAsData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = receiptAsData.txt; sourceTree = "<group>"; };
 		2DEB9766247DB46900A92099 /* RCISOPeriodFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCISOPeriodFormatter.h; sourceTree = "<group>"; };
 		2DEB976A247DB85400A92099 /* SKProductSubscriptionDurationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductSubscriptionDurationExtensions.swift; sourceTree = "<group>"; };
 		2DEC0CFB24A2A1B100B0E5BB /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
@@ -523,6 +529,24 @@
 			path = Misc;
 			sourceTree = "<group>";
 		};
+		2DDE559824C8B5D100DCB087 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2DDE559924C8B5E300DCB087 /* receipts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2DDE559924C8B5E300DCB087 /* receipts */ = {
+			isa = PBXGroup;
+			children = (
+				2DDE559A24C8B5E300DCB087 /* verifyReceipt.txt */,
+				2DDE559B24C8B5E300DCB087 /* base64encodedreceipt.txt */,
+				2DDE559C24C8B5E300DCB087 /* receiptAsData.txt */,
+			);
+			path = receipts;
+			sourceTree = "<group>";
+		};
 		350FBDD61F7DF1640065833D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,6 +625,7 @@
 		35262A1F1F7D77E600C04F2C /* PurchasesTests */ = {
 			isa = PBXGroup;
 			children = (
+				2DDE559824C8B5D100DCB087 /* Resources */,
 				2DD02D5824AD128000419CD9 /* SwiftSources */,
 				35262A291F7D783F00C04F2C /* PurchasesTests-Bridging-Header.h */,
 				35262A221F7D77E600C04F2C /* Info.plist */,
@@ -999,6 +1024,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DDE559D24C8B5E400DCB087 /* verifyReceipt.txt in Resources */,
+				2DDE559F24C8B5E400DCB087 /* receiptAsData.txt in Resources */,
+				2DDE559E24C8B5E400DCB087 /* base64encodedreceipt.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
