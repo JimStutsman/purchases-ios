@@ -9,11 +9,11 @@
 import Foundation
 import StoreKit
 
-public class IntroEligibilityCalculator: NSObject {
+@objc(RCIntroEligibilityCalculator) class IntroEligibilityCalculator: NSObject {
     private let productsManager: ProductsManager
     private let receiptParser: ReceiptParser
     
-    public override init() {
+    override init() {
         self.productsManager = ProductsManager()
         self.receiptParser = ReceiptParser()
     }
@@ -25,16 +25,16 @@ public class IntroEligibilityCalculator: NSObject {
     }
     
     @available(iOS 12.0, macOS 10.14, macCatalyst 13.0, tvOS 12.0, watchOS 6.2, *)
-    @objc public func checkTrialOrIntroductoryPriceEligibility(withData receiptData: Data,
+    @objc func checkTrialOrIntroductoryPriceEligibility(withData receiptData: Data,
                                                                productIdentifiers candidateProductIdentifiers: Set<String>,
-                                                               completion: @escaping ([String: Int], Error?) -> Void) {
+                                                               completion: @escaping ([String: NSNumber], Error?) -> Void) {
         guard candidateProductIdentifiers.count > 0 else {
             completion([:], nil)
             return
         }
         
-        var result: [String: Int] = candidateProductIdentifiers.reduce(into: [:]) { resultDict, productId in
-            resultDict[productId] = IntroEligibilityStatus.unknown.rawValue
+        var result: [String: NSNumber] = candidateProductIdentifiers.reduce(into: [:]) { resultDict, productId in
+            resultDict[productId] = NSNumber(integerLiteral: IntroEligibilityStatus.unknown.rawValue)
         }
         do {
             let receipt = try receiptParser.parse(from: receiptData)
@@ -46,8 +46,8 @@ public class IntroEligibilityCalculator: NSObject {
                 let purchasedProductsWithIntroOffers = allProducts.filter { purchasedProductIdsWithIntroOffers.contains($0.productIdentifier) }
                 let candidateProducts = allProducts.filter { candidateProductIdentifiers.contains($0.productIdentifier) }
                 
-                let eligibility: [String: Int] = self.checkIntroEligibility(candidateProducts: candidateProducts,
-                                                                            purchasedProductsWithIntroOffers: purchasedProductsWithIntroOffers)
+                let eligibility: [String: NSNumber] = self.checkIntroEligibility(candidateProducts: candidateProducts,
+                                                                                 purchasedProductsWithIntroOffers: purchasedProductsWithIntroOffers)
                 result.merge(eligibility) { (_, new) in new }
                 
                 completion(result, nil)
@@ -64,8 +64,8 @@ public class IntroEligibilityCalculator: NSObject {
 private extension IntroEligibilityCalculator {
     
     func checkIntroEligibility(candidateProducts: Set<SKProduct>,
-                               purchasedProductsWithIntroOffers: Set<SKProduct>) -> [String: Int] {
-        var result: [String: Int] = [:]
+                               purchasedProductsWithIntroOffers: Set<SKProduct>) -> [String: NSNumber] {
+        var result: [String: NSNumber] = [:]
         for candidate in candidateProducts {
             let usedIntroForProductIdentifier = purchasedProductsWithIntroOffers
                 .contains { purchased in
@@ -75,8 +75,8 @@ private extension IntroEligibilityCalculator {
                     return foundByProductId || foundByGroupId
                 }
             result[candidate.productIdentifier] = usedIntroForProductIdentifier
-                ? IntroEligibilityStatus.ineligible.rawValue
-                : IntroEligibilityStatus.eligible.rawValue
+                ? NSNumber(integerLiteral:IntroEligibilityStatus.ineligible.rawValue)
+                : NSNumber(integerLiteral:IntroEligibilityStatus.eligible.rawValue)
         }
         return result
     }

@@ -43,4 +43,5 @@
 #include <Purchases/RCProductInfo.h>
 #include <Purchases/RCProductInfoExtractor.h>
 #include <Purchases/RCOperationDispatcher.h>
+#include <Purchases/RCIntroEligibilityCalculator.h>
 #include <Purchases/RCPurchasesSwiftImport.h>
