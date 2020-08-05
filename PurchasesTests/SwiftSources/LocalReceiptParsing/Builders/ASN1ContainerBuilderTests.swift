@@ -64,6 +64,26 @@ class ASN1ContainerBuilderTests: XCTestCase {
         }
     }
 
+    func testBuildFromContainerExtractsShortLengthCorrectly() {
+        let mockPayload: [UInt8] = [0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1]
+        let shortLengthValue: UInt8 = UInt8(mockPayload.count - 1)
+
+        var payloadArray = mockPayload
+        payloadArray.insert(shortLengthValue, at: 1)
+        let payload = ArraySlice(payloadArray)
+        try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == UInt(shortLengthValue)
+    }
+
+    func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLength() {
+        let mockPayload: [UInt8] = [0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1]
+        let shortLengthValue: UInt8 =  55
+
+        var payloadArray = mockPayload
+        payloadArray.insert(shortLengthValue, at: 1)
+        let payload = ArraySlice(payloadArray)
+        expect { try self.containerBuilder.build(fromPayload: payload).length.value }.to(throwError())
+    }
+    
     func testBuildFromContainerThatIsTooSmallThrows() {
         expect { try self.containerBuilder.build(fromPayload: ArraySlice([0b1])) }.to(throwError())
     }
