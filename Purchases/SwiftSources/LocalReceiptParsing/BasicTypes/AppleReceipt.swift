@@ -20,7 +20,7 @@ enum ReceiptAttributeType: UInt {
          opaqueValue = 4,
          sha1Hash = 5,
          creationDate = 12,
-         inApp = 17,
+         inAppPurchase = 17,
          originalApplicationVersion = 19,
          expirationDate = 21
 }

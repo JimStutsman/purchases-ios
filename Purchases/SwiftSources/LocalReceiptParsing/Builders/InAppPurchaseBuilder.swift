@@ -82,7 +82,7 @@ struct InAppPurchaseBuilder {
             let nonOptionalOriginalPurchaseDate = originalPurchaseDate,
             let nonOptionalIsInIntroOfferPeriod = isInIntroOfferPeriod,
             let nonOptionalWebOrderLineItemId = webOrderLineItemId else {
-            throw ReceiptReadingError.inAppParsingError
+            throw ReceiptReadingError.inAppPurchaseParsingError
         }
 
         return InAppPurchase(quantity: nonOptionalQuantity,

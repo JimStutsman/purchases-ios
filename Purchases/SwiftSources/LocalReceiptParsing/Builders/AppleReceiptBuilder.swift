@@ -62,7 +62,7 @@ struct AppleReceiptBuilder {
             case .expirationDate:
                 let internalContainer = try containerBuilder.build(fromPayload: payload)
                 expirationDate = internalContainer.internalPayload.toDate(dateFormatter: dateFormatter)
-            case .inApp:
+            case .inAppPurchase:
                 let internalContainer = try containerBuilder.build(fromPayload: payload)
                 inAppPurchases.append(try inAppPurchaseBuilder.build(fromContainer: internalContainer))
             }

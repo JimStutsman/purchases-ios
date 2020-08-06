@@ -14,7 +14,7 @@ enum ReceiptReadingError: Error {
          dataObjectIdentifierMissing,
          asn1ParsingError(description: String),
          receiptParsingError,
-         inAppParsingError
+         inAppPurchaseParsingError
 }
 
 extension ReceiptReadingError: LocalizedError {
@@ -30,7 +30,7 @@ extension ReceiptReadingError: LocalizedError {
             return "Error while parsing, payload can't be interpreted as ASN1. details: \(description)"
         case .receiptParsingError:
             return "Error while parsing the receipt. One or more attributes are missing."
-        case .inAppParsingError:
+        case .inAppPurchaseParsingError:
             return "Error while parsing in-app purchase. One or more attributes are missing or in the wrong format."
         }
     }
