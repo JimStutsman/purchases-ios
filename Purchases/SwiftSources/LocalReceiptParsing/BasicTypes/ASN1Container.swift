@@ -47,7 +47,7 @@ enum ASN1EncodingType: UInt8 {
 
 struct ASN1Length {
     let value: Int
-    let totalBytes: Int
+    let bytesUsedForLength: Int
 }
 
 struct ASN1Container {
@@ -56,7 +56,7 @@ struct ASN1Container {
     let encodingType: ASN1EncodingType
     let length: ASN1Length
     let internalPayload: ArraySlice<UInt8>
-    let identifierTotalBytes = 1
-    var totalBytes: Int { return identifierTotalBytes + length.value + length.totalBytes }
+    let bytesUsedForIdentifier = 1
+    var totalBytesUsed: Int { return bytesUsedForIdentifier + length.value + length.bytesUsedForLength }
     let internalContainers: [ASN1Container]
 }

@@ -19,11 +19,12 @@ struct ReceiptParser {
         self.receiptBuilder = AppleReceiptBuilder()
     }
 
-    func parse(from data: Data) throws -> AppleReceipt {
-        let intData = [UInt8](data)
+    func parse(from receiptData: Data) throws -> AppleReceipt {
+        let intData = [UInt8](receiptData)
 
         let asn1Container = try containerBuilder.build(fromPayload: ArraySlice(intData))
-        guard let receiptASN1Container = try findASN1Container(withObjectId: .data, inContainer: asn1Container) else {
+        guard let receiptASN1Container = try findASN1Container(withObjectId: ASN1ObjectIdentifier.data,
+                                                               inContainer: asn1Container) else {
             throw ReceiptReadingError.dataObjectIdentifierMissing
         }
         let receipt = try receiptBuilder.build(fromASN1Container: receiptASN1Container)
@@ -37,7 +38,7 @@ private extension ReceiptParser {
         if container.encodingType == .constructed {
             var currentPayload = container.internalPayload
             for internalContainer in container.internalContainers {
-                currentPayload = currentPayload.dropFirst(internalContainer.totalBytes)
+                currentPayload = currentPayload.dropFirst(internalContainer.totalBytesUsed)
                 if internalContainer.containerIdentifier == .objectIdentifier {
                     let objectIdentifier = objectIdentifierParser.build(fromPayload: internalContainer.internalPayload)
                     if objectIdentifier == objectId {

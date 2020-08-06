@@ -16,21 +16,21 @@ struct ASN1ContainerBuilder {
         let encodingType = try extractEncodingType(byte: firstByte)
         let containerIdentifier = try extractIdentifier(byte: firstByte)
         let length = try extractLength(data: payload.dropFirst())
-        let identifierTotalBytes = 1
-        let metadataBytes = identifierTotalBytes + length.totalBytes
+        let bytesUsedForIdentifier = 1
+        let bytesUsedForMetadata = bytesUsedForIdentifier + length.bytesUsedForLength
 
-        guard payload.count - metadataBytes >= length.value else {
+        guard payload.count - bytesUsedForMetadata >= length.value else {
             throw ReceiptReadingError.asn1ParsingError(description: "payload is shorter than length value")
         }
 
-        let internalPayload = payload.dropFirst(metadataBytes).prefix(length.value)
+        let internalPayload = payload.dropFirst(bytesUsedForMetadata).prefix(length.value)
         var internalContainers: [ASN1Container] = []
         if encodingType == .constructed {
             var currentPayload = internalPayload
             while (currentPayload.count > 0) {
                 let internalContainer = try build(fromPayload: currentPayload)
                 internalContainers.append(internalContainer)
-                currentPayload = currentPayload.dropFirst(internalContainer.totalBytes)
+                currentPayload = currentPayload.dropFirst(internalContainer.totalBytesUsed)
             }
         }
         return ASN1Container(containerClass: containerClass,
@@ -79,12 +79,12 @@ private extension ASN1ContainerBuilder {
         let firstByteValue = Int(firstByte.valueInRange(from: 1, to: 7))
 
         if isShortLength {
-            return ASN1Length(value: firstByteValue, totalBytes: 1)
+            return ASN1Length(value: firstByteValue, bytesUsedForLength: 1)
         } else {
             let totalLengthOctets = firstByteValue
             let lengthBytes = data.dropFirst().prefix(totalLengthOctets)
             let lengthValue = lengthBytes.toInt()
-            return ASN1Length(value: lengthValue, totalBytes: totalLengthOctets + 1)
+            return ASN1Length(value: lengthValue, bytesUsedForLength: totalLengthOctets + 1)
         }
     }
 }

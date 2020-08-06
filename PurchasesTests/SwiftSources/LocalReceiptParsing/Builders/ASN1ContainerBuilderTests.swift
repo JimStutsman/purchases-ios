@@ -76,7 +76,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         
         let container = try! self.containerBuilder.build(fromPayload: payload)
         expect(container.length.value) == Int(shortLengthValue)
-        expect(container.length.totalBytes) == 1
+        expect(container.length.bytesUsedForLength) == 1
         expect(container.internalPayload.count) == Int(shortLengthValue)
         expect(container.internalPayload) == payload.dropFirst(2).prefix(Int(shortLengthValue))
     }
@@ -98,7 +98,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         let container = try! self.containerBuilder.build(fromPayload: payload)
         
         expect(container.length.value) == expectedLengthValue
-        expect(container.length.totalBytes) == 4
+        expect(container.length.bytesUsedForLength) == 4
         expect(container.internalPayload.count) == Int(expectedLengthValue)
         
         expect(container.internalPayload) == payload.dropFirst(lengthArray.count + 1).prefix(Int(expectedLengthValue))
@@ -138,7 +138,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         
         let container = try! self.containerBuilder.build(fromPayload: payload)
         
-        expect(container.totalBytes) == 1 + 1 + container.internalPayload.count
+        expect(container.totalBytesUsed) == 1 + 1 + container.internalPayload.count
         expect(container.internalPayload.count) == Int(container.length.value)
     }
     
@@ -156,7 +156,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         
         let container = try! self.containerBuilder.build(fromPayload: payload)
         
-        expect(container.totalBytes) == 1 + lengthArray.count + container.internalPayload.count
+        expect(container.totalBytesUsed) == 1 + lengthArray.count + container.internalPayload.count
     }
     
     func testBuildFromContainerThatIsTooSmallThrows() {
