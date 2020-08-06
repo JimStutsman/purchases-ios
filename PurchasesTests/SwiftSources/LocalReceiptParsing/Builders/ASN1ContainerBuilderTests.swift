@@ -162,4 +162,46 @@ class ASN1ContainerBuilderTests: XCTestCase {
     func testBuildFromContainerThatIsTooSmallThrows() {
         expect { try self.containerBuilder.build(fromPayload: ArraySlice([0b1])) }.to(throwError())
     }
+    
+    func testBuildFromContainerBuildsInternalContainersCorrectlyIfTypeIsConstructed() {
+        let constructedEncodingByte: UInt8 = 0b00100000
+        
+        let subContainer1InternalPayload = Array(repeating: UInt8(0b1), count: 4)
+        let subContainer2InternalPayload = Array(repeating: UInt8(0b1), count: 6)
+        let subContainer1Payload: [UInt8] = [UInt8(0b1),
+                                             UInt8(UInt8(subContainer1InternalPayload.count))]
+                                             + subContainer1InternalPayload
+        let subContainer2Payload: [UInt8] = [UInt8(0b1),
+                                             UInt8(UInt8(subContainer2InternalPayload.count))]
+                                             + subContainer2InternalPayload
+
+        let containerPayload: [UInt8] = [constructedEncodingByte, // id byte
+                                         UInt8(subContainer1Payload.count + subContainer2Payload.count)] // length byte
+                                         + subContainer1Payload + subContainer2Payload // payload
+        
+        let payload = ArraySlice(containerPayload)
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        
+        expect(container.internalContainers.count) == 2
+    }
+
+    func testBuildFromContainerDoesntBuildInternalContainersIfTypeIsPrimitive() {
+        let primitiveEncodingByte: UInt8 = 0b00000000
+        var payloadArray = mockContainerPayload
+        payloadArray.insert(primitiveEncodingByte, at: 0)
+        let payload = ArraySlice(payloadArray)
+        
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        expect(container.encodingType) == .primitive
+        expect(container.internalContainers).to(beEmpty())
+    }
+
+    func testBuildFromContainerRaisesIfTypeIsConstructedButContainerCantBeBuiltFromPayload() {
+        let constructedEncodingByte: UInt8 = 0b00100000
+        var payloadArray = mockContainerPayload
+        payloadArray.insert(constructedEncodingByte, at: 0)
+        let payload = ArraySlice(payloadArray)
+        
+        expect { try self.containerBuilder.build(fromPayload: payload) }.to(throwError())
+    }
 }

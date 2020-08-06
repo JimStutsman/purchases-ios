@@ -58,5 +58,5 @@ struct ASN1Container {
     let internalPayload: ArraySlice<UInt8>
     let identifierTotalBytes = 1
     var totalBytes: Int { return identifierTotalBytes + Int(length.value) + length.totalBytes }
-    var internalContainers: [ASN1Container] = []
+    let internalContainers: [ASN1Container]
 }
