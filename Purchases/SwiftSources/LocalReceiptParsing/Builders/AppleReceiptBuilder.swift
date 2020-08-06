@@ -9,6 +9,10 @@ struct AppleReceiptBuilder {
     private let containerBuilder: ASN1ContainerBuilder
     private let inAppPurchaseBuilder: InAppPurchaseBuilder
     private let dateFormatter: ISO3601DateFormatter
+    
+    private let typeContainerIndex = 0
+    private let attributeTypeContainerIndex = 2
+    private let expectedInternalContainersCount = 3 // type + version + attribute
 
     init() {
         self.containerBuilder = ASN1ContainerBuilder()
@@ -29,8 +33,9 @@ struct AppleReceiptBuilder {
         guard let internalContainer = container.internalContainers.first else { fatalError() }
         let receiptContainer = try containerBuilder.build(fromPayload: internalContainer.internalPayload)
         for receiptAttribute in receiptContainer.internalContainers {
-            let typeContainer = receiptAttribute.internalContainers[0]
-            let valueContainer = receiptAttribute.internalContainers[2]
+            guard receiptAttribute.internalContainers.count == expectedInternalContainersCount else { fatalError() }
+            let typeContainer = receiptAttribute.internalContainers[typeContainerIndex]
+            let valueContainer = receiptAttribute.internalContainers[attributeTypeContainerIndex]
             let attributeType = ReceiptAttributeType(rawValue: typeContainer.internalPayload.toUInt())
             guard let nonOptionalType = attributeType else {
                 continue

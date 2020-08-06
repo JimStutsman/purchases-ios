@@ -8,6 +8,10 @@ import Foundation
 struct InAppPurchaseBuilder {
     private let containerBuilder: ASN1ContainerBuilder
     private let dateFormatter: ISO3601DateFormatter
+    
+    private let typeContainerIndex = 0
+    private let attributeTypeContainerIndex = 2
+    private let expectedInternalContainersCount = 3 // type + version + attribute
 
     init() {
         self.containerBuilder = ASN1ContainerBuilder()
@@ -30,9 +34,9 @@ struct InAppPurchaseBuilder {
         var promotionalOfferIdentifier: String?
 
         for internalContainer in container.internalContainers {
-            guard internalContainer.internalContainers.count == 3 else { fatalError() }
-            let typeContainer = internalContainer.internalContainers[0]
-            let valueContainer = internalContainer.internalContainers[2]
+            guard internalContainer.internalContainers.count == expectedInternalContainersCount else { fatalError() }
+            let typeContainer = internalContainer.internalContainers[typeContainerIndex]
+            let valueContainer = internalContainer.internalContainers[attributeTypeContainerIndex]
 
             guard let attributeType = InAppPurchaseAttributeType(rawValue: typeContainer.internalPayload.toUInt())
                 else { continue }
