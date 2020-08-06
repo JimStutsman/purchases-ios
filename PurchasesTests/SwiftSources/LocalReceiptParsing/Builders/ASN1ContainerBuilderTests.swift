@@ -73,8 +73,12 @@ class ASN1ContainerBuilderTests: XCTestCase {
         var payloadArray = mockContainerPayload
         payloadArray.insert(shortLengthValue, at: 1)
         let payload = ArraySlice(payloadArray)
-        try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == UInt(shortLengthValue)
-        try! expect(self.containerBuilder.build(fromPayload: payload).length.totalBytes) == 1
+        
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        expect(container.length.value) == UInt(shortLengthValue)
+        expect(container.length.totalBytes) == 1
+        expect(container.internalPayload.count) == Int(shortLengthValue)
+        expect(container.internalPayload) == payload.dropFirst(2).prefix(Int(shortLengthValue))
     }
 
     func testBuildFromContainerExtractsLongLengthCorrectly() {
@@ -91,8 +95,13 @@ class ASN1ContainerBuilderTests: XCTestCase {
         payloadArray.insert(contentsOf: lengthArray, at: 1)
         let payload = ArraySlice(payloadArray)
         
-        try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == expectedLengthValue
-        try! expect(self.containerBuilder.build(fromPayload: payload).length.totalBytes) == 4
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        
+        expect(container.length.value) == expectedLengthValue
+        expect(container.length.totalBytes) == 4
+        expect(container.internalPayload.count) == Int(expectedLengthValue)
+        
+        expect(container.internalPayload) == payload.dropFirst(lengthArray.count + 1).prefix(Int(expectedLengthValue))
     }
     
     func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLengthWithShortLength() {
@@ -120,7 +129,35 @@ class ASN1ContainerBuilderTests: XCTestCase {
         expect { try self.containerBuilder.build(fromPayload: payload).length.value }.to(throwError())
     }
     
+    func testBuildFromContainerCalculatesTotalBytesCorrectlyForShortLength() {
+        let lengthByte: UInt8 = 0b00000111
+        
+        var payloadArray: [UInt8] = Array(repeating: 0, count: 100)
+        payloadArray.insert(lengthByte, at: 1)
+        let payload = ArraySlice(payloadArray)
+        
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        
+        expect(container.totalBytes) == 1 + 1 + container.internalPayload.count
+        expect(container.internalPayload.count) == Int(container.length.value)
+    }
     
+    func testBuildFromContainerCalculatesTotalBytesCorrectlyForLongLength() {
+        // first 1 indicates long length, the next 7 bits are the number of bytes used for length
+        let totalLengthBytes: [UInt8] = [0b10000011]
+        
+        let lengthBytes: [UInt8] = [0b1, 0b1, 0b11]
+        
+        let lengthArray = totalLengthBytes + lengthBytes
+        
+        var payloadArray: [UInt8] = Array(repeating: 0, count: 100000)
+        payloadArray.insert(contentsOf: lengthArray, at: 1)
+        let payload = ArraySlice(payloadArray)
+        
+        let container = try! self.containerBuilder.build(fromPayload: payload)
+        
+        expect(container.totalBytes) == 1 + lengthArray.count + container.internalPayload.count
+    }
     
     func testBuildFromContainerThatIsTooSmallThrows() {
         expect { try self.containerBuilder.build(fromPayload: ArraySlice([0b1])) }.to(throwError())
