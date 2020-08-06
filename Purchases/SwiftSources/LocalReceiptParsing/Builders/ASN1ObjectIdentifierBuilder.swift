@@ -9,9 +9,9 @@ class ASN1ObjectIdentifierBuilder {
     func build(fromPayload payload: ArraySlice<UInt8>) -> ASN1ObjectIdentifier? {
         guard let firstByte = payload.first else { fatalError("invalid object identifier") }
 
-        var oidBytes: [UInt] = []
-        oidBytes.append(UInt(firstByte / 40))
-        oidBytes.append(UInt(firstByte % 40))
+        var objectIdentifierNumbers: [UInt] = []
+        objectIdentifierNumbers.append(UInt(firstByte / 40))
+        objectIdentifierNumbers.append(UInt(firstByte % 40))
 
         let trailingPayload = payload.dropFirst()
         var currentValue: UInt = 0
@@ -24,7 +24,7 @@ class ASN1ObjectIdentifierBuilder {
             if isAppendingToLongValue {
                 currentValue = (currentValue << 7) | byteValue
                 if isShortLength {
-                    oidBytes.append(currentValue)
+                    objectIdentifierNumbers.append(currentValue)
                     isAppendingToLongValue = false
                     currentValue = 0
                 } else {
@@ -32,7 +32,7 @@ class ASN1ObjectIdentifierBuilder {
                 }
             } else {
                 if isShortLength {
-                    oidBytes.append(byteValue)
+                    objectIdentifierNumbers.append(byteValue)
                     isAppendingToLongValue = false
                     currentValue = 0
                 } else {
@@ -42,8 +42,8 @@ class ASN1ObjectIdentifierBuilder {
             }
         }
 
-        let oidString = oidBytes.map { String($0) }
-                                .joined(separator: ".")
-        return ASN1ObjectIdentifier(rawValue: oidString)
+        let objectIdentifierString = objectIdentifierNumbers.map { String($0) }
+                                                            .joined(separator: ".")
+        return ASN1ObjectIdentifier(rawValue: objectIdentifierString)
     }
 }
