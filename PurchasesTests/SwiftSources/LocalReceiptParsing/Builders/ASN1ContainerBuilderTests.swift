@@ -5,8 +5,7 @@ import Nimble
 
 class ASN1ContainerBuilderTests: XCTestCase {
     var containerBuilder: ASN1ContainerBuilder!
-    let mockContainerPayload: [UInt8] = [0b01, 0b01, 0b01]
-    let mockConstructedContainerPayload: [UInt8] = [0b11, 0b11, 0b01, 0b01, 0b01, 0b01, 0b01, 0b01, 0b01]
+    let mockContainerPayload: [UInt8] = [0b01, 0b01, 0b01, 0b01, 0b01, 0b01, 0b01, 0b01, 0b01]
 
     override func setUp() {
         super.setUp()
@@ -47,8 +46,12 @@ class ASN1ContainerBuilderTests: XCTestCase {
         try! expect(self.containerBuilder.build(fromPayload: payload).encodingType) == .primitive
         
         let constructedEncodingByte: UInt8 = 0b00100000
-        payloadArray = mockConstructedContainerPayload
+        payloadArray = mockContainerPayload
         payloadArray.insert(constructedEncodingByte, at: 0)
+
+        let containerLenghtByte: UInt8 = UInt8(3)
+        payloadArray.insert(containerLenghtByte, at: 1)
+
         payload = ArraySlice(payloadArray)
         try! expect(self.containerBuilder.build(fromPayload: payload).encodingType) == .constructed
     }
@@ -65,20 +68,18 @@ class ASN1ContainerBuilderTests: XCTestCase {
     }
 
     func testBuildFromContainerExtractsShortLengthCorrectly() {
-        let mockPayload: [UInt8] = [0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1]
-        let shortLengthValue: UInt8 = UInt8(mockPayload.count - 1)
+        let shortLengthValue: UInt8 = UInt8(mockContainerPayload.count - 1)
 
-        var payloadArray = mockPayload
+        var payloadArray = mockContainerPayload
         payloadArray.insert(shortLengthValue, at: 1)
         let payload = ArraySlice(payloadArray)
         try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == UInt(shortLengthValue)
     }
 
     func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLength() {
-        let mockPayload: [UInt8] = [0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1, 0b1]
         let shortLengthValue: UInt8 =  55
 
-        var payloadArray = mockPayload
+        var payloadArray = mockContainerPayload
         payloadArray.insert(shortLengthValue, at: 1)
         let payload = ArraySlice(payloadArray)
         expect { try self.containerBuilder.build(fromPayload: payload).length.value }.to(throwError())
