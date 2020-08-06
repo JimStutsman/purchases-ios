@@ -59,5 +59,4 @@ struct ASN1Container {
     let identifierTotalBytes = 1
     var totalBytes: Int { return identifierTotalBytes + Int(length.value) + length.totalBytes }
     var internalContainers: [ASN1Container] = []
-    var inAppReceiptContainer: [ASN1Container] = []
 }
