@@ -38,7 +38,7 @@ import StoreKit
         }
         do {
             let receipt = try receiptParser.parse(from: receiptData)
-            let purchasedProductIdsWithIntroOffers = receipt.purchasedIntroOfferProductIdentifiers()
+            let purchasedProductIdsWithIntroOffers = receipt.purchasedIntroOfferOrFreeTrialProductIdentifiers()
             
             let allProductIdentifiers = candidateProductIdentifiers.union(purchasedProductIdsWithIntroOffers)
             

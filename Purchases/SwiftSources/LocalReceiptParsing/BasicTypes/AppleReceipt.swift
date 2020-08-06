@@ -35,7 +35,7 @@ struct AppleReceipt {
     let expirationDate: Date?
     let inAppPurchases: [InAppPurchase]
 
-    func purchasedIntroOfferProductIdentifiers() -> Set<String> {
+    func purchasedIntroOfferOrFreeTrialProductIdentifiers() -> Set<String> {
         let productIdentifiers = inAppPurchases
             .filter { $0.isInIntroOfferPeriod || $0.isInTrialPeriod == true }
             .map { $0.productId }
