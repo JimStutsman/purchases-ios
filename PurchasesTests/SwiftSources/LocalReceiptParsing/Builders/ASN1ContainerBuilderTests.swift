@@ -74,9 +74,28 @@ class ASN1ContainerBuilderTests: XCTestCase {
         payloadArray.insert(shortLengthValue, at: 1)
         let payload = ArraySlice(payloadArray)
         try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == UInt(shortLengthValue)
+        try! expect(self.containerBuilder.build(fromPayload: payload).length.totalBytes) == 1
     }
 
-    func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLength() {
+    func testBuildFromContainerExtractsLongLengthCorrectly() {
+        // first 1 indicates long length, the next 7 bits are the number of bytes used for length
+        let totalLengthBytes: [UInt8] = [0b10000011]
+        
+        // bytes after the first indicate the actual length value.
+        let lengthBytes: [UInt8] = [0b1, 0b1, 0b11]
+        let expectedLengthValue = ArraySlice(lengthBytes).toUInt()
+        
+        let lengthArray = totalLengthBytes + lengthBytes
+        
+        var payloadArray: [UInt8] = Array(repeating: 0, count: 100000)
+        payloadArray.insert(contentsOf: lengthArray, at: 1)
+        let payload = ArraySlice(payloadArray)
+        
+        try! expect(self.containerBuilder.build(fromPayload: payload).length.value) == expectedLengthValue
+        try! expect(self.containerBuilder.build(fromPayload: payload).length.totalBytes) == 4
+    }
+    
+    func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLengthWithShortLength() {
         let shortLengthValue: UInt8 =  55
 
         var payloadArray = mockContainerPayload
@@ -84,6 +103,24 @@ class ASN1ContainerBuilderTests: XCTestCase {
         let payload = ArraySlice(payloadArray)
         expect { try self.containerBuilder.build(fromPayload: payload).length.value }.to(throwError())
     }
+    
+    func testBuildFromContainerRaisesIfPayloadSizeSmallerThanLengthWithLongLength() {
+        // first 1 indicates long length, the next 7 bits are the number of bytes used for length
+        let totalLengthBytes: [UInt8] = [0b10000011]
+        
+        // bytes after the first indicate the actual length value.
+        let lengthBytes: [UInt8] = [0b1, 0b1, 0b11]
+        
+        let lengthArray = totalLengthBytes + lengthBytes
+        
+        var payloadArray: [UInt8] = [0b1, 0b1]
+        payloadArray.insert(contentsOf: lengthArray, at: 1)
+        let payload = ArraySlice(payloadArray)
+        
+        expect { try self.containerBuilder.build(fromPayload: payload).length.value }.to(throwError())
+    }
+    
+    
     
     func testBuildFromContainerThatIsTooSmallThrows() {
         expect { try self.containerBuilder.build(fromPayload: ArraySlice([0b1])) }.to(throwError())

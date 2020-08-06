@@ -12,7 +12,7 @@ enum ReceiptReadingError: Error {
     case missingReceipt,
          emptyReceipt,
          dataObjectIdentifierMissing,
-         asn1ParsingError,
+         asn1ParsingError(description: String),
          receiptParsingError,
          inAppParsingError
 }
