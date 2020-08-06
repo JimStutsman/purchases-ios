@@ -26,8 +26,8 @@ extension ReceiptReadingError: LocalizedError {
             return "The receipt is empty"
         case .dataObjectIdentifierMissing:
             return "Couldn't find an object identifier of type data in the receipt"
-        case .asn1ParsingError:
-            return "Error while parsing, payload can't be interpreted as ASN1"
+        case .asn1ParsingError(let description):
+            return "Error while parsing, payload can't be interpreted as ASN1. details: \(description)"
         case .receiptParsingError:
             return "Error while parsing the receipt. One or more attributes are missing."
         case .inAppParsingError:

@@ -9,16 +9,20 @@ struct ASN1ContainerBuilder {
 
     func build(fromPayload payload: ArraySlice<UInt8>) throws -> ASN1Container {
         guard payload.count >= 2,
-              let firstByte = payload.first else { throw ReceiptReadingError.asn1ParsingError(description: "payload needs to be at least 2 bytes long") }
+            let firstByte = payload.first else {
+            throw ReceiptReadingError.asn1ParsingError(description: "payload needs to be at least 2 bytes long")
+        }
         let containerClass = try extractClass(byte: firstByte)
         let encodingType = try extractEncodingType(byte: firstByte)
         let containerIdentifier = try extractIdentifier(byte: firstByte)
         let length = try extractLength(data: payload.dropFirst())
         let identifierTotalBytes = 1
         let metadataBytes = identifierTotalBytes + length.totalBytes
-        
-        guard payload.count - metadataBytes >= Int(length.value) else { throw ReceiptReadingError.asn1ParsingError(description: "payload is shorter than length value") }
-        
+
+        guard payload.count - metadataBytes >= Int(length.value) else {
+            throw ReceiptReadingError.asn1ParsingError(description: "payload is shorter than length value")
+        }
+
         let internalPayload = payload.dropFirst(metadataBytes).prefix(Int(length.value))
         var internalContainers: [ASN1Container] = []
         if encodingType == .constructed {
@@ -42,7 +46,9 @@ private extension ASN1ContainerBuilder {
 
     func extractClass(byte: UInt8) throws -> ASN1Class {
         let firstTwoBits = byte.valueInRange(from: 0, to: 1)
-        guard let asn1Class = ASN1Class(rawValue: firstTwoBits) else { throw ReceiptReadingError.asn1ParsingError(description: "couldn't determine asn1 class") }
+        guard let asn1Class = ASN1Class(rawValue: firstTwoBits) else {
+            throw ReceiptReadingError.asn1ParsingError(description: "couldn't determine asn1 class")
+        }
         return asn1Class
     }
 
@@ -56,12 +62,16 @@ private extension ASN1ContainerBuilder {
 
     func extractIdentifier(byte: UInt8) throws -> ASN1Identifier {
         let lastFiveBits = byte.valueInRange(from: 3, to: 7)
-        guard let asn1Identifier = ASN1Identifier(rawValue: lastFiveBits) else { throw ReceiptReadingError.asn1ParsingError(description: "couldn't determine identifier") }
+        guard let asn1Identifier = ASN1Identifier(rawValue: lastFiveBits) else {
+            throw ReceiptReadingError.asn1ParsingError(description: "couldn't determine identifier")
+        }
         return asn1Identifier
     }
 
     func extractLength(data: ArraySlice<UInt8>) throws -> ASN1Length {
-        guard let firstByte = data.first else { throw ReceiptReadingError.asn1ParsingError(description: "length needs to be at least one byte") }
+        guard let firstByte = data.first else {
+            throw ReceiptReadingError.asn1ParsingError(description: "length needs to be at least one byte")
+        }
 
         let lengthBit = firstByte.bitAtIndex(0)
         let isShortLength = lengthBit == 0
