@@ -75,7 +75,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         let payload = ArraySlice(payloadArray)
         
         let container = try! self.containerBuilder.build(fromPayload: payload)
-        expect(container.length.value) == UInt(shortLengthValue)
+        expect(container.length.value) == Int(shortLengthValue)
         expect(container.length.totalBytes) == 1
         expect(container.internalPayload.count) == Int(shortLengthValue)
         expect(container.internalPayload) == payload.dropFirst(2).prefix(Int(shortLengthValue))
@@ -87,7 +87,7 @@ class ASN1ContainerBuilderTests: XCTestCase {
         
         // bytes after the first indicate the actual length value.
         let lengthBytes: [UInt8] = [0b1, 0b1, 0b11]
-        let expectedLengthValue = ArraySlice(lengthBytes).toUInt()
+        let expectedLengthValue = ArraySlice(lengthBytes).toInt()
         
         let lengthArray = totalLengthBytes + lengthBytes
         

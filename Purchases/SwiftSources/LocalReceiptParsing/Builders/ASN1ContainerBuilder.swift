@@ -19,11 +19,11 @@ struct ASN1ContainerBuilder {
         let identifierTotalBytes = 1
         let metadataBytes = identifierTotalBytes + length.totalBytes
 
-        guard payload.count - metadataBytes >= Int(length.value) else {
+        guard payload.count - metadataBytes >= length.value else {
             throw ReceiptReadingError.asn1ParsingError(description: "payload is shorter than length value")
         }
 
-        let internalPayload = payload.dropFirst(metadataBytes).prefix(Int(length.value))
+        let internalPayload = payload.dropFirst(metadataBytes).prefix(length.value)
         var internalContainers: [ASN1Container] = []
         if encodingType == .constructed {
             var currentPayload = internalPayload
@@ -76,14 +76,14 @@ private extension ASN1ContainerBuilder {
         let lengthBit = firstByte.bitAtIndex(0)
         let isShortLength = lengthBit == 0
 
-        let firstByteValue = UInt(firstByte.valueInRange(from: 1, to: 7))
+        let firstByteValue = Int(firstByte.valueInRange(from: 1, to: 7))
 
         if isShortLength {
-            return ASN1Length(value: UInt(firstByte), totalBytes: 1)
+            return ASN1Length(value: firstByteValue, totalBytes: 1)
         } else {
-            let totalLengthOctets = Int(firstByteValue)
+            let totalLengthOctets = firstByteValue
             let lengthBytes = data.dropFirst().prefix(totalLengthOctets)
-            let lengthValue = lengthBytes.toUInt()
+            let lengthValue = lengthBytes.toInt()
             return ASN1Length(value: lengthValue, totalBytes: totalLengthOctets + 1)
         }
     }
