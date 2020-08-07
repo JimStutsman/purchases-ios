@@ -36,6 +36,54 @@ class InAppPurchaseBuilderTests: XCTest {
         let sampleReceiptContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
         expect { try self.inAppPurchaseBuilder.build(fromContainer: sampleReceiptContainer) }.notTo(throwError())
     }
+
+    func testBuildGetsCorrectQuantityContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.quantity) == quantity
+    }
+
+    func testBuildGetsCorrectProductIdContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.productId) == productId
+    }
+
+    func testBuildGetsCorrectTransactionIdContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.transactionId) == transactionId
+    }
+
+    func testBuildGetsCorrectOriginalTransactionIdContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.originalTransactionId) == originalTransactionId
+    }
+
+    func testBuildGetsCorrectPurchaseDateContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.purchaseDate) == purchaseDate
+    }
+
+    func testBuildGetsCorrectOriginalPurchaseDateContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.originalPurchaseDate) == originalPurchaseDate
+    }
+
+    func testBuildGetsCorrectIsInIntroOfferPeriodContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.isInIntroOfferPeriod) == isInIntroOfferPeriod
+    }
+
+    func testBuildGetsCorrectWebOrderLineItemIdContainer() {
+        let sampleInAppPurchaseContainer = sampleInAppPurchaseContainerWithMinimalAttributes()
+        let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: sampleInAppPurchaseContainer)
+        expect(inAppPurchase.webOrderLineItemId) == webOrderLineItemId
+    }
 }
 
 private extension InAppPurchaseBuilderTests {
