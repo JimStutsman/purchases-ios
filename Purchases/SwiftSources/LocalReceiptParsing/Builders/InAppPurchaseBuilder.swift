@@ -38,7 +38,7 @@ struct InAppPurchaseBuilder {
             let typeContainer = internalContainer.internalContainers[typeContainerIndex]
             let valueContainer = internalContainer.internalContainers[attributeTypeContainerIndex]
 
-            guard let attributeType = InAppPurchaseAttributeType(rawValue: typeContainer.internalPayload.toUInt())
+            guard let attributeType = InAppPurchaseAttributeType(rawValue: typeContainer.internalPayload.toInt())
                 else { continue }
 
             let internalContainer = try containerBuilder.build(fromPayload: valueContainer.internalPayload)

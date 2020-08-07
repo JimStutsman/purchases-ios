@@ -10,11 +10,11 @@ import Foundation
 
 struct ReceiptAttribute {
     let type: ReceiptAttributeType
-    let version: UInt
+    let version: Int
     let value: String
 }
 
-enum ReceiptAttributeType: UInt {
+enum ReceiptAttributeType: Int {
     case bundleId = 2,
          applicationVersion = 3,
          opaqueValue = 4,

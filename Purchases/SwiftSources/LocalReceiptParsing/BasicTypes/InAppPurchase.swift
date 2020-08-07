@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum InAppPurchaseAttributeType: UInt {
+enum InAppPurchaseAttributeType: Int {
     case quantity = 1701,
          productId = 1702,
          transactionId = 1703,
