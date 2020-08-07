@@ -65,12 +65,6 @@ class ContainerFactory {
                              internalContainers: [])
     }
 
-    private func intToBytes(int: Int) -> [UInt8] {
-        let intAsBytes = withUnsafeBytes(of: int.bigEndian, Array.init)
-        let arrayWithoutInsignificantBytes = Array(intAsBytes.drop(while: { $0 == 0 }))
-        return arrayWithoutInsignificantBytes
-    }
-
     func buildConstructedContainer(containers: [ASN1Container],
                                    encodingType: ASN1EncodingType = .constructed) -> ASN1Container {
         let payload = containers.flatMap { self.headerBytes(forContainer: $0) + $0.internalPayload }
@@ -123,6 +117,23 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
+    func buildReceiptContainerFromContainers(containers: [ASN1Container]) -> ASN1Container {
+        let attributesContainer = buildConstructedContainer(containers: containers)
+
+        let receiptWrapper = buildConstructedContainer(containers: [attributesContainer],
+                                                       encodingType: .primitive)
+        return buildConstructedContainer(containers: [receiptWrapper],
+                                         encodingType: .constructed)
+    }
+}
+
+private extension ContainerFactory {
+    func intToBytes(int: Int) -> [UInt8] {
+        let intAsBytes = withUnsafeBytes(of: int.bigEndian, Array.init)
+        let arrayWithoutInsignificantBytes = Array(intAsBytes.drop(while: { $0 == 0 }))
+        return arrayWithoutInsignificantBytes
+    }
+
     func headerBytes(forContainer container: ASN1Container) -> [UInt8] {
         let identifierHeader = (container.containerClass.rawValue << 6
             | container.encodingType.rawValue << 5
@@ -135,14 +146,5 @@ class ContainerFactory {
             lengthHeader.insert(firstByte, at: 0)
             return [identifierHeader] + lengthHeader
         }
-    }
-
-    func buildReceiptContainerFromContainers(containers: [ASN1Container]) -> ASN1Container {
-        let attributesContainer = buildConstructedContainer(containers: containers)
-
-        let receiptWrapper = buildConstructedContainer(containers: [attributesContainer],
-                                                       encodingType: .primitive)
-        return buildConstructedContainer(containers: [receiptWrapper],
-                                         encodingType: .constructed)
     }
 }
