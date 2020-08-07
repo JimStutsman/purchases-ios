@@ -136,4 +136,13 @@ class ContainerFactory {
             return [identifierHeader] + lengthHeader
         }
     }
+
+    func buildReceiptContainerFromContainers(containers: [ASN1Container]) -> ASN1Container {
+        let attributesContainer = buildConstructedContainer(containers: containers)
+
+        let receiptWrapper = buildConstructedContainer(containers: [attributesContainer],
+                                                       encodingType: .primitive)
+        return buildConstructedContainer(containers: [receiptWrapper],
+                                         encodingType: .constructed)
+    }
 }
