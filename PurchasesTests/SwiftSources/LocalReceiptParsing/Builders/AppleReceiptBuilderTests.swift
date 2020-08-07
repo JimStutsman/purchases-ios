@@ -58,6 +58,24 @@ class AppleReceiptBuilderTests: XCTestCase {
         expect(receipt.opaqueValue).toNot(beNil())
     }
 
+    func testBuildGetsExpiresDate() {
+        let expirationDate = Date.from(year: 2020, month: 7, day: 4, hour: 5, minute: 3, second: 2)
+        let expirationDateContainer = containerFactory.buildReceiptAttributeContainer(attributeType: .expirationDate,
+                                                                                      expirationDate)
+
+        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+            bundleIdContainer(),
+            appVersionContainer(),
+            originalAppVersionContainer(),
+            opaqueValueContainer(),
+            sha1HashContainer(),
+            creationDateContainer(),
+            expirationDateContainer
+        ])
+        let receipt = try! self.appleReceiptBuilder.build(fromASN1Container: receiptContainer)
+        expect(receipt.expirationDate) == expirationDate
+    }
+
     func testBuildThrowsIfBundleIdIsMissing() {
         let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
             appVersionContainer(),
