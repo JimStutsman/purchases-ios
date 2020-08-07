@@ -9,7 +9,7 @@ import Nimble
 
 @testable import Purchases
 
-class InAppPurchaseBuilderTests: XCTest {
+class InAppPurchaseBuilderTests: XCTestCase {
     let quantity = 2
     let productId = "com.revenuecat.sampleProduct"
     let transactionId = "089230953203"
@@ -124,12 +124,116 @@ class InAppPurchaseBuilderTests: XCTest {
 
         expect(inAppPurchase.promotionalOfferIdentifier) == promotionalOfferIdentifier
     }
+
+    func testBuildThrowsIfQuantityIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            productIdContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfProductIdIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfTransactionIdIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfOriginalTransactionIdIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            transactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfPurchaseDateIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfOriginalPurchaseDateIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            isInIntroOfferPeriodContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfIsInIntroOfferPeriodIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            webOrderLineItemIdContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
+
+    func testBuildThrowsIfWebOrderLineItemIdIsMissing() {
+        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+            quantityContainer(),
+            productIdContainer(),
+            transactionIdContainer(),
+            originalTransactionIdContainer(),
+            purchaseDateContainer(),
+            originalPurchaseDateContainer(),
+            isInIntroOfferPeriodContainer()
+        ])
+        expect { try self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer) }.to(throwError())
+    }
 }
 
 private extension InAppPurchaseBuilderTests {
 
     func sampleInAppPurchaseContainerWithMinimalAttributes() -> ASN1Container {
-        return containerFactory.buildReceiptContainerFromContainers(containers: minimalAttributes())
+        return containerFactory.buildInAppPurchaseContainerFromContainers(containers: minimalAttributes())
     }
 
     func minimalAttributes() -> [ASN1Container] {
