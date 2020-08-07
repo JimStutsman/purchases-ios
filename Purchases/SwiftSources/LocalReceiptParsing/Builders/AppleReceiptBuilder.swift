@@ -30,10 +30,14 @@ struct AppleReceiptBuilder {
         var expirationDate: Date?
         var inAppPurchases: [InAppPurchase] = []
 
-        guard let internalContainer = container.internalContainers.first else { fatalError() }
+        guard let internalContainer = container.internalContainers.first else {
+            throw ReceiptReadingError.receiptParsingError
+        }
         let receiptContainer = try containerBuilder.build(fromPayload: internalContainer.internalPayload)
         for receiptAttribute in receiptContainer.internalContainers {
-            guard receiptAttribute.internalContainers.count == expectedInternalContainersCount else { fatalError() }
+            guard receiptAttribute.internalContainers.count == expectedInternalContainersCount else {
+                throw ReceiptReadingError.receiptParsingError
+            }
             let typeContainer = receiptAttribute.internalContainers[typeContainerIndex]
             let valueContainer = receiptAttribute.internalContainers[attributeTypeContainerIndex]
             let attributeType = ReceiptAttributeType(rawValue: typeContainer.internalPayload.toInt())

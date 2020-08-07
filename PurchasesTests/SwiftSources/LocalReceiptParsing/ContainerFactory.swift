@@ -35,6 +35,7 @@ class ContainerFactory {
         let dateString = dateFormatter.string(from: date)
         guard let stringAsData = (dateString.data(using: .ascii)) else { fatalError() }
         let stringAsBytes = [UInt8](stringAsData)
+        guard stringAsBytes.count < 128 else { fatalError("this method is intended for short strings only") }
 
         return ASN1Container(containerClass: .application,
                              containerIdentifier: .octetString,
@@ -54,9 +55,7 @@ class ContainerFactory {
     }
 
     func buildIntContainer(int: Int) -> ASN1Container {
-        var intAsVar = int
-        let intAsData = NSData(bytes: &intAsVar, length: MemoryLayout<Int>.size)
-        let intAsBytes = [UInt8](intAsData)
+        let intAsBytes = intToBytes(int: int)
 
         return ASN1Container(containerClass: .application,
                              containerIdentifier: .octetString,
@@ -66,22 +65,22 @@ class ContainerFactory {
                              internalContainers: [])
     }
 
-    func buildConstructedContainer(containers: [ASN1Container]) -> ASN1Container {
-        let payload = containers.flatMap { $0.internalPayload }
-        return ASN1Container(containerClass: .application,
-                             containerIdentifier: .octetString,
-                             encodingType: .primitive,
-                             length: ASN1Length(value: 1, bytesUsedForLength: 1),
-                             internalPayload: ArraySlice(payload),
-                             internalContainers: containers)
+    private func intToBytes(int: Int) -> [UInt8] {
+        let intAsBytes = withUnsafeBytes(of: int.bigEndian, Array.init)
+        let arrayWithoutInsignificantBytes = Array(intAsBytes.drop(while: { $0 == 0 }))
+        return arrayWithoutInsignificantBytes
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, value: Int) -> ASN1Container {
-        let typeContainer = buildIntContainer(int: attributeType.rawValue)
-        let versionContainer = buildIntContainer(int: 1)
-        let valueContainer = buildIntContainer(int: value)
-
-        return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
+    func buildConstructedContainer(containers: [ASN1Container],
+                                   encodingType: ASN1EncodingType = .constructed) -> ASN1Container {
+        let payload = containers.flatMap { self.headerBytes(forContainer: $0) + $0.internalPayload }
+        let bytesUsedForLength = payload.count < 128 ? 1 : intToBytes(int: payload.count).count + 1
+        return ASN1Container(containerClass: .application,
+                             containerIdentifier: .octetString,
+                             encodingType: encodingType,
+                             length: ASN1Length(value: payload.count, bytesUsedForLength: bytesUsedForLength),
+                             internalPayload: ArraySlice(payload),
+                             internalContainers: containers)
     }
 
     func buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType) -> ASN1Container {
@@ -92,27 +91,49 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, date: Date) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ value: Int) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
-        let valueContainer = buildDateContainer(date: date)
+        let valueContainer = buildConstructedContainer(containers: [buildIntContainer(int: value)])
 
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, bool: Bool) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ date: Date) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
-        let valueContainer = buildBoolContainer(bool: bool)
+        let valueContainer = buildConstructedContainer(containers: [buildDateContainer(date: date)])
 
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, string: String) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ bool: Bool) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
-        let valueContainer = buildStringContainer(string: string)
+        let valueContainer = buildConstructedContainer(containers: [buildBoolContainer(bool: bool)])
 
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
+    }
+
+    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ string: String) -> ASN1Container {
+        let typeContainer = buildIntContainer(int: attributeType.rawValue)
+        let versionContainer = buildIntContainer(int: 1)
+        let valueContainer = buildConstructedContainer(containers: [buildStringContainer(string: string)])
+
+        return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
+    }
+
+    func headerBytes(forContainer container: ASN1Container) -> [UInt8] {
+        let identifierHeader = (container.containerClass.rawValue << 6
+            | container.encodingType.rawValue << 5
+            | container.containerIdentifier.rawValue)
+        if container.length.value < 128 {
+            return [identifierHeader] + [UInt8(container.length.value)]
+        } else {
+            var lengthHeader = intToBytes(int: container.length.value)
+            let firstByte = 0b10000000 | UInt8(container.length.bytesUsedForLength - 1)
+            lengthHeader.insert(firstByte, at: 0)
+            return [identifierHeader] + lengthHeader
+        }
     }
 }
