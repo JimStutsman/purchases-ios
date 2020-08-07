@@ -56,11 +56,12 @@ class ContainerFactory {
 
     func buildIntContainer(int: Int) -> ASN1Container {
         let intAsBytes = intToBytes(int: int)
+        let bytesUsedForLength = intAsBytes.count < 128 ? 1 : intToBytes(int: intAsBytes.count).count + 1
 
         return ASN1Container(containerClass: .application,
                              containerIdentifier: .octetString,
                              encodingType: .primitive,
-                             length: ASN1Length(value: 1, bytesUsedForLength: 1),
+                             length: ASN1Length(value: intAsBytes.count, bytesUsedForLength: bytesUsedForLength),
                              internalPayload: ArraySlice(intAsBytes),
                              internalContainers: [])
     }
