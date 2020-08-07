@@ -77,7 +77,7 @@ class ContainerFactory {
                              internalContainers: containers)
     }
 
-    func buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType) -> ASN1Container {
+    func buildReceiptDataAttributeContainer(attributeType: BuildableReceiptAttributeType) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildSimpleDataContainer()
@@ -85,7 +85,7 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ value: Int) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType, _ value: Int) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildConstructedContainer(containers: [buildIntContainer(int: value)])
@@ -93,7 +93,7 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ date: Date) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType, _ date: Date) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildConstructedContainer(containers: [buildDateContainer(date: date)])
@@ -101,7 +101,7 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ bool: Bool) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType, _ bool: Bool) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildConstructedContainer(containers: [buildBoolContainer(bool: bool)])
@@ -109,7 +109,7 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: ReceiptAttributeType, _ string: String) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType, _ string: String) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildConstructedContainer(containers: [buildStringContainer(string: string)])
@@ -123,6 +123,11 @@ class ContainerFactory {
         let receiptWrapper = buildConstructedContainer(containers: [attributesContainer],
                                                        encodingType: .primitive)
         return buildConstructedContainer(containers: [receiptWrapper],
+                                         encodingType: .constructed)
+    }
+
+    func buildInAppPurchaseContainerFromContainers(containers: [ASN1Container]) -> ASN1Container {
+        return buildConstructedContainer(containers: containers,
                                          encodingType: .constructed)
     }
 }
@@ -148,3 +153,9 @@ private extension ContainerFactory {
         }
     }
 }
+
+protocol BuildableReceiptAttributeType {
+    var rawValue: Int { get }
+}
+extension InAppPurchaseAttributeType: BuildableReceiptAttributeType { }
+extension ReceiptAttributeType: BuildableReceiptAttributeType { }

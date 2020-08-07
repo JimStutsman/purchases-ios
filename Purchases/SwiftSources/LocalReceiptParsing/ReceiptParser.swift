@@ -27,7 +27,7 @@ struct ReceiptParser {
                                                                inContainer: asn1Container) else {
             throw ReceiptReadingError.dataObjectIdentifierMissing
         }
-        let receipt = try receiptBuilder.build(fromASN1Container: receiptASN1Container)
+        let receipt = try receiptBuilder.build(fromContainer: receiptASN1Container)
         return receipt
     }
 }

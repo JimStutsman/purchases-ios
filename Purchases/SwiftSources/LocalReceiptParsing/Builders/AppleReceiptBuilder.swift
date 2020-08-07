@@ -20,7 +20,7 @@ struct AppleReceiptBuilder {
         self.dateFormatter = ISO3601DateFormatter.shared
     }
 
-    func build(fromASN1Container container: ASN1Container) throws -> AppleReceipt {
+    func build(fromContainer container: ASN1Container) throws -> AppleReceipt {
         var bundleId: String?
         var applicationVersion: String?
         var originalApplicationVersion: String?
