@@ -4,12 +4,37 @@ import Nimble
 @testable import Purchases
 
 class ASN1ObjectIdentifierBuilderTests: XCTestCase {
+
     func testBuildFromPayloadBuildsCorrectlyForDataPayload() {
         let payload = objectIdentifierPayload(.data)
-        expect(try! ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .data
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .data
+    }
+
+    func testBuildFromPayloadBuildsCorrectlyForSignedDataPayload() {
+        let payload = objectIdentifierPayload(.signedData)
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .signedData
+    }
+
+    func testBuildFromPayloadBuildsCorrectlyForEnvelopedDataPayload() {
+        let payload = objectIdentifierPayload(.envelopedData)
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .envelopedData
+    }
+
+    func testBuildFromPayloadBuildsCorrectlyForSignedAndEnvelopedDataPayload() {
+        let payload = objectIdentifierPayload(.signedAndEnvelopedData)
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .signedAndEnvelopedData
+    }
+
+    func testBuildFromPayloadBuildsCorrectlyForDigestedDataPayload() {
+        let payload = objectIdentifierPayload(.digestedData)
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .digestedData
+    }
+
+    func testBuildFromPayloadBuildsCorrectlyForEncryptedDataPayload() {
+        let payload = objectIdentifierPayload(.encryptedData)
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .encryptedData
     }
 }
-
 private extension ASN1ObjectIdentifierBuilderTests {
 
     func objectIdentifierPayload(_ objectIdentifier: ASN1ObjectIdentifier) -> ArraySlice<UInt8> {

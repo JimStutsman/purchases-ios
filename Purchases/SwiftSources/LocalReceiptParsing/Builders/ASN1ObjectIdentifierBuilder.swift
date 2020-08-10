@@ -6,10 +6,8 @@
 import Foundation
 
 class ASN1ObjectIdentifierBuilder {
-    func build(fromPayload payload: ArraySlice<UInt8>) throws -> ASN1ObjectIdentifier? {
-        guard let firstByte = payload.first else {
-            throw ReceiptReadingError.asn1ParsingError(description: "invalid object identifier")
-        }
+    func build(fromPayload payload: ArraySlice<UInt8>) -> ASN1ObjectIdentifier? {
+        guard let firstByte = payload.first else { return nil }
 
         var objectIdentifierNumbers: [UInt] = []
         objectIdentifierNumbers.append(UInt(firstByte / 40))
