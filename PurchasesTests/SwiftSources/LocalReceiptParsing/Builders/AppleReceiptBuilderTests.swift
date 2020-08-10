@@ -6,6 +6,7 @@ import Nimble
 class AppleReceiptBuilderTests: XCTestCase {
     let containerFactory = ContainerFactory()
     var appleReceiptBuilder: AppleReceiptBuilder!
+    var mockInAppPurchaseBuilder: MockInAppPurchaseBuilder!
 
     let bundleId = "com.revenuecat.test"
     let applicationVersion = "3.2.1"
@@ -14,7 +15,8 @@ class AppleReceiptBuilderTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        self.appleReceiptBuilder = AppleReceiptBuilder()
+        self.mockInAppPurchaseBuilder = MockInAppPurchaseBuilder()
+        self.appleReceiptBuilder = AppleReceiptBuilder(inAppPurchaseBuilder: mockInAppPurchaseBuilder)
     }
 
     func testCanBuildCorrectlyWithMinimalAttributes() {
@@ -68,6 +70,38 @@ class AppleReceiptBuilderTests: XCTestCase {
             .buildReceiptContainerFromContainers(containers: minimalAttributes() + [expirationDateContainer])
         let receipt = try! self.appleReceiptBuilder.build(fromContainer: receiptContainer)
         expect(receipt.expirationDate) == expirationDate
+    }
+
+    func testBuildGetsInAppPurchases() {
+        let totalInAppPurchases = Int.random(in: 5..<20)
+        let inAppContainers = (Int(0)..<totalInAppPurchases).map { _ in
+            containerFactory.buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType.inAppPurchase)
+        }
+
+        let receiptContainer = containerFactory
+            .buildReceiptContainerFromContainers(containers: minimalAttributes() + inAppContainers)
+
+        mockInAppPurchaseBuilder.stubbedBuildResult = InAppPurchase(quantity: 2,
+                                                                    productId: "com.revenuecat.sometest",
+                                                                    transactionId: "8923532523",
+                                                                    originalTransactionId: "235325322",
+                                                                    productType: .nonRenewingSubscription,
+                                                                    purchaseDate: Date(),
+                                                                    originalPurchaseDate: Date(),
+                                                                    expiresDate: nil,
+                                                                    cancellationDate: nil,
+                                                                    isInTrialPeriod: false,
+                                                                    isInIntroOfferPeriod: false,
+                                                                    webOrderLineItemId: 658464,
+                                                                    promotionalOfferIdentifier: nil)
+
+        let receipt = try! self.appleReceiptBuilder.build(fromContainer: receiptContainer)
+        expect(receipt.inAppPurchases.count) == totalInAppPurchases
+        expect(self.mockInAppPurchaseBuilder.invokedBuildCount) == totalInAppPurchases
+
+        for inAppPurchase in receipt.inAppPurchases {
+            expect(inAppPurchase) == mockInAppPurchaseBuilder.stubbedBuildResult
+        }
     }
 
     func testBuildThrowsIfBundleIdIsMissing() {

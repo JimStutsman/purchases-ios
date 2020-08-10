@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct ASN1ContainerBuilder {
+class ASN1ContainerBuilder {
 
     func build(fromPayload payload: ArraySlice<UInt8>) throws -> ASN1Container {
         guard payload.count >= 2,

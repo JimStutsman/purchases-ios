@@ -29,7 +29,7 @@ enum InAppPurchaseProductType: Int {
          autoRenewableSubscription
 }
 
-struct InAppPurchase {
+struct InAppPurchase: Equatable {
     let quantity: Int
     let productId: String
     let transactionId: String

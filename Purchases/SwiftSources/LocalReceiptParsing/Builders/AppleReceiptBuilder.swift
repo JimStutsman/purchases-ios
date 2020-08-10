@@ -5,19 +5,21 @@
 
 import Foundation
 
-struct AppleReceiptBuilder {
+class AppleReceiptBuilder {
     private let containerBuilder: ASN1ContainerBuilder
     private let inAppPurchaseBuilder: InAppPurchaseBuilder
     private let dateFormatter: ISO3601DateFormatter
-    
+
     private let typeContainerIndex = 0
     private let attributeTypeContainerIndex = 2
     private let expectedInternalContainersCount = 3 // type + version + attribute
 
-    init() {
-        self.containerBuilder = ASN1ContainerBuilder()
-        self.inAppPurchaseBuilder = InAppPurchaseBuilder()
-        self.dateFormatter = ISO3601DateFormatter.shared
+    init(containerBuilder: ASN1ContainerBuilder = ASN1ContainerBuilder(),
+         inAppPurchaseBuilder: InAppPurchaseBuilder = InAppPurchaseBuilder(),
+         dateFormatter: ISO3601DateFormatter = ISO3601DateFormatter.shared) {
+        self.containerBuilder = containerBuilder
+        self.inAppPurchaseBuilder = inAppPurchaseBuilder
+        self.dateFormatter = dateFormatter
     }
 
     func build(fromContainer container: ASN1Container) throws -> AppleReceipt {

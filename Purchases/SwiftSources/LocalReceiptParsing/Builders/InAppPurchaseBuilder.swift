@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct InAppPurchaseBuilder {
+class InAppPurchaseBuilder {
     private let containerBuilder: ASN1ContainerBuilder
     private let dateFormatter: ISO3601DateFormatter
     
