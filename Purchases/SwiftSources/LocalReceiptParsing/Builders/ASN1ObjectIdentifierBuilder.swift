@@ -14,31 +14,16 @@ class ASN1ObjectIdentifierBuilder {
         objectIdentifierNumbers.append(UInt(firstByte % 40))
 
         let trailingPayload = payload.dropFirst()
-        var currentValue: UInt = 0
+        var currentBuffer: UInt = 0
         var isShortLength = false
-        var isAppendingToLongValue = false
         for byte in trailingPayload {
             isShortLength = byte.bitAtIndex(0) == 0
             let byteValue = UInt(byte.valueInRange(from: 1, to: 7))
 
-            if isAppendingToLongValue {
-                currentValue = (currentValue << 7) | byteValue
-                if isShortLength {
-                    objectIdentifierNumbers.append(currentValue)
-                    isAppendingToLongValue = false
-                    currentValue = 0
-                } else {
-                    isAppendingToLongValue = true
-                }
-            } else {
-                if isShortLength {
-                    objectIdentifierNumbers.append(byteValue)
-                    isAppendingToLongValue = false
-                    currentValue = 0
-                } else {
-                    currentValue = byteValue
-                    isAppendingToLongValue = true
-                }
+            currentBuffer = (currentBuffer << 7) | byteValue
+            if isShortLength {
+                objectIdentifierNumbers.append(currentBuffer)
+                currentBuffer = 0
             }
         }
 
