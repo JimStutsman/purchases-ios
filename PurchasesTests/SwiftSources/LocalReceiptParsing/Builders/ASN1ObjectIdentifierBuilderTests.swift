@@ -34,6 +34,16 @@ class ASN1ObjectIdentifierBuilderTests: XCTestCase {
         let payload = objectIdentifierPayload(.encryptedData)
         expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)) == .encryptedData
     }
+
+    func testBuildFromPayloadReturnsNilIfIdentifierNotRecognized() {
+        let payload = encodeASN1ObjectIdentifier(numbers: [1, 3, 23, 534643, 7454, 1, 7, 2])
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)).to(beNil())
+    }
+
+    func testBuildFromPayloadReturnsNilIfIdentifierPayloadEmpty() {
+        let payload: ArraySlice<UInt8> = ArraySlice([])
+        expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)).to(beNil())
+    }
 }
 private extension ASN1ObjectIdentifierBuilderTests {
 
