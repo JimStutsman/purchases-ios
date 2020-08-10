@@ -36,7 +36,8 @@ class ASN1ObjectIdentifierBuilderTests: XCTestCase {
     }
 
     func testBuildFromPayloadReturnsNilIfIdentifierNotRecognized() {
-        let payload = encodeASN1ObjectIdentifier(numbers: [1, 3, 23, 534643, 7454, 1, 7, 2])
+        let unknownObjectID = [1, 3, 23, 534643, 7454, 1, 7, 2]
+        let payload = encodeASN1ObjectIdentifier(numbers: unknownObjectID)
         expect(ASN1ObjectIdentifierBuilder().build(fromPayload: payload)).to(beNil())
     }
 
@@ -77,20 +78,22 @@ private extension ASN1ObjectIdentifierBuilderTests {
 
     func encodeLongNumber(number: Int) -> [UInt8] {
         let numberAsBinaryString = String(number, radix: 2)
-        let splitString = splitNumberStringIntoGroups(ofLength: 7, string: numberAsBinaryString)
-        let splitNumbers = splitString.map { UInt8($0, radix: 2)! }
-        let numberAsBytes = listByAddingOneToTheFirstBitOfAllButLast(numbers: splitNumbers)
-        return numberAsBytes
+        let numberAsListOfBinaryStrings = splitStringIntoGroups(ofLength: 7, string: numberAsBinaryString)
+        let bytes = numberAsListOfBinaryStrings.map { UInt8($0, radix: 2)! }
+        let encodedBytes = listByAddingOneToTheFirstBitOfAllButLast(numbers: bytes)
+        return encodedBytes
     }
 
-    func splitNumberStringIntoGroups(ofLength length: Int, string: String) -> [String] {
+    func splitStringIntoGroups(ofLength length: Int, string: String) -> [String] {
         guard length > 0 else { return [] }
-        let range = 0..<((string.count + length - 1) / length)
+
+        let totalGroups: Int = (string.count + length - 1) / length
+        let range = 0..<totalGroups
         let indices = range.map { length * $0..<min(length * ($0 + 1), string.count) }
         return indices
-            .map { string.reversed()[$0.startIndex..<$0.endIndex] }
-            .map { String.init($0.reversed()) }
-            .reversed()
+            .map { string.reversed()[$0.startIndex..<$0.endIndex] } // 1. reverse so we start counting from the right
+            .map { String.init($0.reversed()) } // 2. reverse again to form each string
+            .reversed() // 3. reverse the whole list to undo the change of step 1
     }
 
     func listByAddingOneToTheFirstBitOfAllButLast(numbers: [UInt8]) -> [UInt8] {
