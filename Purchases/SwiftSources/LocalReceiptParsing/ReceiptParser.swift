@@ -41,7 +41,7 @@ private extension ReceiptParser {
             for (index, internalContainer) in container.internalContainers.enumerated() {
                 if internalContainer.containerIdentifier == .objectIdentifier {
                     let objectIdentifier = objectIdentifierParser.build(fromPayload: internalContainer.internalPayload)
-                    if objectIdentifier == objectId && index < container.internalContainers.count {
+                    if objectIdentifier == objectId && index < container.internalContainers.count - 1 {
                         return container.internalContainers[index + 1]
                     }
                 } else {

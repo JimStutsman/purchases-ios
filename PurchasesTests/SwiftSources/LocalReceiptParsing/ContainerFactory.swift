@@ -7,7 +7,7 @@ import Foundation
 @testable import Purchases
 
 class ContainerFactory {
-    let objectIdentifierEncoder = ASN1ObjectIdentifierEncoder()
+    private let objectIdentifierEncoder = ASN1ObjectIdentifierEncoder()
 
     func simpleDataContainer() -> ASN1Container {
         let length = 55

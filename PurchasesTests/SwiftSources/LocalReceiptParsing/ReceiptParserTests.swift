@@ -8,7 +8,7 @@ class ReceiptParserTests: XCTestCase {
     var mockAppleReceiptBuilder: MockAppleReceiptBuilder!
     var mockASN1ContainerBuilder: MockASN1ContainerBuilder!
 
-    let containerFactory = ContainerFactory()
+    private let containerFactory = ContainerFactory()
 
     override func setUp() {
         super.setUp()
@@ -73,10 +73,37 @@ class ReceiptParserTests: XCTestCase {
         expect(receivedReceipt) == expectedReceipt
     }
 
-    func testParseFromReceiptThrowsIfNoDataObjectIdentifierFound() {
+    func testParseFromReceiptThrowsIfReceiptBuilderThrows() {
+        let container = containerWithDataObjectIdentifier()
+
+        mockASN1ContainerBuilder.stubbedBuildResult = container
+        mockAppleReceiptBuilder.stubbedBuildError = ReceiptReadingError.receiptParsingError
+
+        expect { try self.receiptParser.parse(from: Data()) }.to(throwError(ReceiptReadingError.receiptParsingError))
     }
 
-    func testParseFromReceiptThrowsIfReceiptBuilderThrows() {
+    func testParseFromReceiptThrowsIfNoDataObjectIdentifierFound() {
+        let container = containerFactory.constructedContainer(containers: [
+            containerFactory.objectIdentifierContainer(.signedAndEnvelopedData),
+            containerFactory.receiptContainerFromContainers(containers: [])
+        ])
+
+        mockASN1ContainerBuilder.stubbedBuildResult = container
+
+        expect { try self.receiptParser.parse(from: Data()) }
+            .to(throwError(ReceiptReadingError.dataObjectIdentifierMissing))
+    }
+
+    func testParseFromReceiptThrowsIfReceiptPayloadIsntLocatedAfterDataObjectIdentifierContainer() {
+        let container = containerFactory.constructedContainer(containers: [
+            containerFactory.receiptContainerFromContainers(containers: []),
+            containerFactory.objectIdentifierContainer(.data),
+        ])
+
+        mockASN1ContainerBuilder.stubbedBuildResult = container
+
+        expect { try self.receiptParser.parse(from: Data()) }
+            .to(throwError(ReceiptReadingError.dataObjectIdentifierMissing))
     }
 }
 
