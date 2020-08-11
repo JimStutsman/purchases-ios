@@ -45,3 +45,4 @@
 #include <Purchases/RCOperationDispatcher.h>
 #include <Purchases/RCIntroEligibilityCalculator.h>
 #include <Purchases/RCPurchasesSwiftImport.h>
+#include <Purchases/Purchases-Swift.h>

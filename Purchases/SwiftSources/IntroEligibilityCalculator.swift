@@ -25,16 +25,16 @@ import StoreKit
     }
     
     @available(iOS 12.0, macOS 10.14, macCatalyst 13.0, tvOS 12.0, watchOS 6.2, *)
-    @objc func checkTrialOrIntroductoryPriceEligibility(withData receiptData: Data,
-                                                               productIdentifiers candidateProductIdentifiers: Set<String>,
-                                                               completion: @escaping ([String: NSNumber], Error?) -> Void) {
+    @objc func checkTrialOrIntroductoryPriceEligibility(with receiptData: Data,
+                                                        productIdentifiers candidateProductIdentifiers: Set<String>,
+                                                        completion: @escaping ([String: NSNumber], Error?) -> Void) {
         guard candidateProductIdentifiers.count > 0 else {
             completion([:], nil)
             return
         }
         
         var result: [String: NSNumber] = candidateProductIdentifiers.reduce(into: [:]) { resultDict, productId in
-            resultDict[productId] = NSNumber(integerLiteral: IntroEligibilityStatus.unknown.rawValue)
+            resultDict[productId] = IntroEligibilityStatus.unknown.toNSNumber()
         }
         do {
             let receipt = try receiptParser.parse(from: receiptData)
@@ -75,15 +75,21 @@ private extension IntroEligibilityCalculator {
                     return foundByProductId || foundByGroupId
                 }
             result[candidate.productIdentifier] = usedIntroForProductIdentifier
-                ? NSNumber(integerLiteral:IntroEligibilityStatus.ineligible.rawValue)
-                : NSNumber(integerLiteral:IntroEligibilityStatus.eligible.rawValue)
+                ? IntroEligibilityStatus.ineligible.toNSNumber()
+                : IntroEligibilityStatus.eligible.toNSNumber()
         }
         return result
     }
 }
 
-internal enum IntroEligibilityStatus: Int {
+enum IntroEligibilityStatus: Int {
     case unknown,
          ineligible,
          eligible
+}
+
+extension IntroEligibilityStatus {
+    func toNSNumber() -> NSNumber {
+        return NSNumber(integerLiteral: self.rawValue)
+    }
 }
