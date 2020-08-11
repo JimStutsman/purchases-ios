@@ -25,7 +25,7 @@ enum ReceiptAttributeType: Int {
          expirationDate = 21
 }
 
-struct AppleReceipt {
+struct AppleReceipt: Equatable {
     let bundleId: String
     let applicationVersion: String
     let originalApplicationVersion: String

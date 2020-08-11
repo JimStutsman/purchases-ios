@@ -7,7 +7,9 @@ import Foundation
 @testable import Purchases
 
 class ContainerFactory {
-    func buildSimpleDataContainer() -> ASN1Container {
+    let objectIdentifierEncoder = ASN1ObjectIdentifierEncoder()
+
+    func simpleDataContainer() -> ASN1Container {
         let length = 55
         return ASN1Container(containerClass: .application,
                              containerIdentifier: .octetString,
@@ -81,7 +83,7 @@ class ContainerFactory {
     func buildReceiptDataAttributeContainer(attributeType: BuildableReceiptAttributeType) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
-        let valueContainer = buildSimpleDataContainer()
+        let valueContainer = simpleDataContainer()
 
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
@@ -110,7 +112,8 @@ class ContainerFactory {
         return buildConstructedContainer(containers: [typeContainer, versionContainer, valueContainer])
     }
 
-    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType, _ string: String) -> ASN1Container {
+    func buildReceiptAttributeContainer(attributeType: BuildableReceiptAttributeType,
+                                        _ string: String) -> ASN1Container {
         let typeContainer = buildIntContainer(int: attributeType.rawValue)
         let versionContainer = buildIntContainer(int: 1)
         let valueContainer = buildConstructedContainer(containers: [buildStringContainer(string: string)])
@@ -130,6 +133,18 @@ class ContainerFactory {
     func buildInAppPurchaseContainerFromContainers(containers: [ASN1Container]) -> ASN1Container {
         return buildConstructedContainer(containers: containers,
                                          encodingType: .constructed)
+    }
+
+    func buildObjectIdentifierContainer(_ objectIdentifier: ASN1ObjectIdentifier) -> ASN1Container {
+        let payload = objectIdentifierEncoder.objectIdentifierPayload(objectIdentifier)
+        let bytesUsedForLength = payload.count < 128 ? 1 : intToBytes(int: payload.count).count + 1
+
+        return ASN1Container(containerClass: .application,
+                             containerIdentifier: .objectIdentifier,
+                             encodingType: .primitive,
+                             length: ASN1Length(value: payload.count, bytesUsedForLength: bytesUsedForLength),
+                             internalPayload: payload,
+                             internalContainers: [])
     }
 }
 
@@ -158,5 +173,5 @@ private extension ContainerFactory {
 protocol BuildableReceiptAttributeType {
     var rawValue: Int { get }
 }
-extension InAppPurchaseAttributeType: BuildableReceiptAttributeType { }
-extension ReceiptAttributeType: BuildableReceiptAttributeType { }
+extension InAppPurchaseAttributeType: BuildableReceiptAttributeType {}
+extension ReceiptAttributeType: BuildableReceiptAttributeType {}

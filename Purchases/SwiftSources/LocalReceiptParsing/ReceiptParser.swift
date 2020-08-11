@@ -8,15 +8,17 @@
 
 import Foundation
 
-struct ReceiptParser {
+class ReceiptParser {
     private let objectIdentifierParser: ASN1ObjectIdentifierBuilder
     private let containerBuilder: ASN1ContainerBuilder
     private let receiptBuilder: AppleReceiptBuilder
 
-    init() {
-        self.objectIdentifierParser = ASN1ObjectIdentifierBuilder()
-        self.containerBuilder = ASN1ContainerBuilder()
-        self.receiptBuilder = AppleReceiptBuilder()
+    init(objectIdentifierParser: ASN1ObjectIdentifierBuilder = ASN1ObjectIdentifierBuilder(),
+         containerBuilder: ASN1ContainerBuilder = ASN1ContainerBuilder(),
+         receiptBuilder: AppleReceiptBuilder = AppleReceiptBuilder()) {
+        self.objectIdentifierParser = objectIdentifierParser
+        self.containerBuilder = containerBuilder
+        self.receiptBuilder = receiptBuilder
     }
 
     func parse(from receiptData: Data) throws -> AppleReceipt {
@@ -36,13 +38,11 @@ private extension ReceiptParser {
     func findASN1Container(withObjectId objectId: ASN1ObjectIdentifier,
                            inContainer container: ASN1Container) throws -> ASN1Container? {
         if container.encodingType == .constructed {
-            var currentPayload = container.internalPayload
-            for internalContainer in container.internalContainers {
-                currentPayload = currentPayload.dropFirst(internalContainer.totalBytesUsed)
+            for (index, internalContainer) in container.internalContainers.enumerated() {
                 if internalContainer.containerIdentifier == .objectIdentifier {
                     let objectIdentifier = objectIdentifierParser.build(fromPayload: internalContainer.internalPayload)
-                    if objectIdentifier == objectId {
-                        return try containerBuilder.build(fromPayload: currentPayload)
+                    if objectIdentifier == objectId && index < container.internalContainers.count {
+                        return container.internalContainers[index + 1]
                     }
                 } else {
                     let receipt = try findASN1Container(withObjectId: objectId, inContainer: internalContainer)
