@@ -73,6 +73,7 @@
 		37E3503FD7AB94A85A397EF3 /* RCHTTPStatusCodes.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E35331DBA29B3C17D0F507 /* RCHTTPStatusCodes.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		37E3506DF4FDFCE5CA75B057 /* RCProductInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E35FDC209D3F4C38791BDE /* RCProductInfo.m */; };
 		37E350940C1C75D6DFFB3F94 /* ISO3601DateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E352A24623FB706B93D9F1 /* ISO3601DateFormatterTests.swift */; };
+		37E35096F00109F827375249 /* MockProductsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E35C9439E087F63ECC4F59 /* MockProductsManager.swift */; };
 		37E3509E9E39B1FFE93351B1 /* NSError+RCExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E35D12020065BE7D6E473D /* NSError+RCExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		37E350AAD0BAE521A7F94846 /* RCAttributionFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E35166EE0877FCCD3C0C2D /* RCAttributionFetcher.m */; };
 		37E351505CB4764821451E27 /* ProductInfoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E3583675928C01D92E3166 /* ProductInfoExtensions.swift */; };
@@ -114,6 +115,7 @@
 		37E35616A3D5D204B8BB2503 /* RCStoreKitWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E359B77C1E588C9C009D2B /* RCStoreKitWrapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		37E356538C6A9A05887CAE12 /* NSError+RCExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E353AF2CAD3CEDE6D9B368 /* NSError+RCExtensionsTests.swift */; };
 		37E356644B9A1601CD40D7E0 /* ASN1ObjectIdentifierBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E35FCCA2447C2A93C37431 /* ASN1ObjectIdentifierBuilder.swift */; };
+		37E3566468428D32D732D625 /* MockReceiptParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E354B13440508B46C9A530 /* MockReceiptParser.swift */; };
 		37E3567EAB98594B4912E305 /* RCLogUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E35EB9B60477A7AD2C2EB5 /* RCLogUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		37E356E4DA9961A36D16F6E3 /* NSLocale+RCExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E3528315F4F007250F62B2 /* NSLocale+RCExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		37E357301A5D15C0E90C9BD3 /* RCProductInfoExtractor.h in Headers */ = {isa = PBXBuildFile; fileRef = 37E35BC489985F613020035D /* RCProductInfoExtractor.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -319,6 +321,7 @@
 		37E3548189DA008320B3FC98 /* ProductInfoExtractorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductInfoExtractorTests.swift; sourceTree = "<group>"; };
 		37E354902741920FC5AE69A5 /* RCEntitlementInfos+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCEntitlementInfos+Protected.h"; sourceTree = "<group>"; };
 		37E354AF5D4E5FB2787B40DB /* IdentityManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityManagerTests.swift; sourceTree = "<group>"; };
+		37E354B13440508B46C9A530 /* MockReceiptParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockReceiptParser.swift; sourceTree = "<group>"; };
 		37E354B18710B488B8B0D443 /* IntroEligibilityCalculatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroEligibilityCalculatorTests.swift; sourceTree = "<group>"; };
 		37E354BEB8FDE39CAB7C4D69 /* MockDeviceCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockDeviceCache.swift; sourceTree = "<group>"; };
 		37E354D3420651DECC1EA656 /* RCOfferings+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCOfferings+Protected.h"; sourceTree = "<group>"; };
@@ -380,6 +383,7 @@
 		37E35C5A65AAF701DED59800 /* MockInMemoryCachedOfferings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockInMemoryCachedOfferings.swift; sourceTree = "<group>"; };
 		37E35C6CBB3229AA53ECEB58 /* RCInMemoryCachedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCInMemoryCachedObject.h; sourceTree = "<group>"; };
 		37E35C8542B5C9C2749040D0 /* ASN1ObjectIdentifierBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASN1ObjectIdentifierBuilderTests.swift; sourceTree = "<group>"; };
+		37E35C9439E087F63ECC4F59 /* MockProductsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockProductsManager.swift; sourceTree = "<group>"; };
 		37E35CB72101C1CA642C101C /* ASN1ContainerBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASN1ContainerBuilderTests.swift; sourceTree = "<group>"; };
 		37E35CC6289D46E544F5F006 /* RCISOPeriodFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCISOPeriodFormatter.m; sourceTree = "<group>"; };
 		37E35CE6628D07BD2C4A07C0 /* RCStoreKitWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCStoreKitWrapper.m; sourceTree = "<group>"; };
@@ -692,6 +696,8 @@
 				37E355744D64075AA91342DE /* MockInAppPurchaseBuilder.swift */,
 				37E35C1554F296F7F1317747 /* MockAppleReceiptBuilder.swift */,
 				37E351EB3689AF304E5B1031 /* MockASN1ContainerBuilder.swift */,
+				37E35C9439E087F63ECC4F59 /* MockProductsManager.swift */,
+				37E354B13440508B46C9A530 /* MockReceiptParser.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -1246,6 +1252,8 @@
 				37E3515B3BCEADD0C3B07470 /* MockASN1ContainerBuilder.swift in Sources */,
 				37E35AB21E374E375F60E92A /* ASN1ObjectIdentifierEncoder.swift in Sources */,
 				37E35EDA5BAF7112FC2EAFC2 /* ContainerFactory.swift in Sources */,
+				37E35096F00109F827375249 /* MockProductsManager.swift in Sources */,
+				37E3566468428D32D732D625 /* MockReceiptParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
