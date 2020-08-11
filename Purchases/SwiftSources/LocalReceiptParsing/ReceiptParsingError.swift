@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum ReceiptReadingError: Error {
+enum ReceiptReadingError: Error, Equatable {
     case missingReceipt,
          emptyReceipt,
          dataObjectIdentifierMissing,
