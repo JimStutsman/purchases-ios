@@ -18,7 +18,8 @@
     RCIdentityManager,
     RCSubscriberAttributesManager,
     RCSystemInfo,
-    RCOperationDispatcher;
+    RCOperationDispatcher,
+    RCIntroEligibilityCalculator;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,12 +34,13 @@ NS_ASSUME_NONNULL_BEGIN
                   storeKitWrapper:(RCStoreKitWrapper *)storeKitWrapper
                notificationCenter:(NSNotificationCenter *)notificationCenter
                      userDefaults:(NSUserDefaults *)userDefaults
-                       systemInfo:(RCSystemInfo *)systemInfo
+                       systemInfo:systemInfo
                  offeringsFactory:(RCOfferingsFactory *)offeringsFactory
                       deviceCache:(RCDeviceCache *)deviceCache
                   identityManager:(RCIdentityManager *)identityManager
       subscriberAttributesManager:(RCSubscriberAttributesManager *)subscriberAttributesManager
-              operationDispatcher:(RCOperationDispatcher *)operationDispatcher;
+              operationDispatcher:(RCOperationDispatcher *)operationDispatcher
+       introEligibilityCalculator:(RCIntroEligibilityCalculator *)introEligibilityCalculator;
 
 + (void)setDefaultInstance:(nullable RCPurchases *)instance;
 

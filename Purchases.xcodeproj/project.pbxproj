@@ -24,6 +24,7 @@
 		2D8F622324D30F9D00F993AA /* ReceiptParsingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D8F622224D30F9D00F993AA /* ReceiptParsingError.swift */; };
 		2D97458D24BDFBF8006245E9 /* ProductsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97458C24BDFBF8006245E9 /* ProductsManager.swift */; };
 		2D97458F24BDFCEF006245E9 /* IntroEligibilityCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97458E24BDFCEF006245E9 /* IntroEligibilityCalculator.swift */; };
+		2DA0068F24E2E515002C59D3 /* MockIntroEligibilityCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA0068E24E2E515002C59D3 /* MockIntroEligibilityCalculator.swift */; };
 		2DA5A4B124DC8AD1000D2932 /* ReceiptParsing+TestsWithRealReceipts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA5A4B024DC8AD1000D2932 /* ReceiptParsing+TestsWithRealReceipts.swift */; };
 		2DD02D5524AD011600419CD9 /* RCPurchasesSwiftImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DD02D5424AD00ED00419CD9 /* RCPurchasesSwiftImport.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		2DD02D5724AD0B0500419CD9 /* RCIntroEligibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD02D5624AD0B0500419CD9 /* RCIntroEligibilityTests.swift */; };
@@ -221,6 +222,7 @@
 		2D8F622224D30F9D00F993AA /* ReceiptParsingError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptParsingError.swift; sourceTree = "<group>"; };
 		2D97458C24BDFBF8006245E9 /* ProductsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsManager.swift; sourceTree = "<group>"; };
 		2D97458E24BDFCEF006245E9 /* IntroEligibilityCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroEligibilityCalculator.swift; sourceTree = "<group>"; };
+		2DA0068E24E2E515002C59D3 /* MockIntroEligibilityCalculator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockIntroEligibilityCalculator.swift; sourceTree = "<group>"; };
 		2DA5A4B024DC8AD1000D2932 /* ReceiptParsing+TestsWithRealReceipts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReceiptParsing+TestsWithRealReceipts.swift"; sourceTree = "<group>"; };
 		2DD02D5424AD00ED00419CD9 /* RCPurchasesSwiftImport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCPurchasesSwiftImport.h; sourceTree = "<group>"; };
 		2DD02D5624AD0B0500419CD9 /* RCIntroEligibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RCIntroEligibilityTests.swift; sourceTree = "<group>"; };
@@ -652,6 +654,7 @@
 		37E35081077192045E3A8080 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				2DA0068E24E2E515002C59D3 /* MockIntroEligibilityCalculator.swift */,
 				37E354BEB8FDE39CAB7C4D69 /* MockDeviceCache.swift */,
 				37E357D16038F07915D7825D /* MockUserDefaults.swift */,
 				37E35C5A65AAF701DED59800 /* MockInMemoryCachedOfferings.swift */,
@@ -674,7 +677,6 @@
 				37E35EABF6D7AFE367718784 /* MockSKDiscount.swift */,
 				2DD7BA4C24C63A830066B4C2 /* MockSystemInfo.swift */,
 				37E35659EB530A5109AFAB50 /* MockOperationDispatcher.swift */,
-				2D33A66324D9BDEE00893BD4 /* MockIntroEligibilityCalculator.swift */,
 				37E355744D64075AA91342DE /* MockInAppPurchaseBuilder.swift */,
 			);
 			path = Mocks;
@@ -1214,6 +1216,7 @@
 				37E35F89A7F467364EAF5640 /* AppleReceiptBuilderTests.swift in Sources */,
 				37E35495B2B41764FAE7A91B /* ContainerFactory.swift in Sources */,
 				37E35BD808CF7DE8960ACFBE /* ASN1ObjectIdentifierBuilderTests.swift in Sources */,
+				2DA0068F24E2E515002C59D3 /* MockIntroEligibilityCalculator.swift in Sources */,
 				37E35EB2CCADA3EA3BCAEBA5 /* MockInAppPurchaseBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

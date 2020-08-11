@@ -66,7 +66,7 @@ typedef void (^RCReceiveReceiptDataBlock)(NSData *);
 @property (nonatomic) RCIdentityManager *identityManager;
 @property (nonatomic) RCSystemInfo *systemInfo;
 @property (nonatomic) RCOperationDispatcher *operationDispatcher;
-@property (nonatomic) IntroEligibilityCalculator *introEligibilityCalculator;
+@property (nonatomic) RCIntroEligibilityCalculator *introEligibilityCalculator;
 
 @end
 
@@ -225,7 +225,7 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
             [[RCSubscriberAttributesManager alloc] initWithBackend:backend
                                                        deviceCache:deviceCache];
     RCOperationDispatcher *operationDispatcher = [[RCOperationDispatcher alloc] init];
-    IntroEligibilityCalculator *introCalculator = [[IntroEligibilityCalculator alloc] init];
+    RCIntroEligibilityCalculator *introCalculator = [[RCIntroEligibilityCalculator alloc] init];
     
     return [self initWithAppUserID:appUserID
                     requestFetcher:fetcher
@@ -258,7 +258,7 @@ static BOOL _automaticAppleSearchAdsAttributionCollection = NO;
                   identityManager:(RCIdentityManager *)identityManager
       subscriberAttributesManager:(RCSubscriberAttributesManager *)subscriberAttributesManager
               operationDispatcher:(RCOperationDispatcher *)operationDispatcher
-       introEligibilityCalculator:(IntroEligibilityCalculator *)introEligibilityCalculator  {
+       introEligibilityCalculator:(RCIntroEligibilityCalculator *)introEligibilityCalculator  {
     if (self = [super init]) {
         RCDebugLog(@"Debug logging enabled.");
         RCDebugLog(@"SDK Version - %@", self.class.frameworkVersion);
