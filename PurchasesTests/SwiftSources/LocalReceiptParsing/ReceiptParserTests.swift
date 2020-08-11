@@ -19,9 +19,9 @@ class ReceiptParserTests: XCTestCase {
     }
 
     func testParseFromReceiptDataBuildsContainerAfterObjectIdentifier() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [])
-        let dataObjectIdentifierContainer = containerFactory.buildObjectIdentifierContainer(.data)
-        let constructedContainer = containerFactory.buildConstructedContainer(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [])
+        let dataObjectIdentifierContainer = containerFactory.objectIdentifierContainer(.data)
+        let constructedContainer = containerFactory.constructedContainer(containers: [
             dataObjectIdentifierContainer,
             receiptContainer
         ])
@@ -38,28 +38,28 @@ class ReceiptParserTests: XCTestCase {
     }
 
     func testParseFromReceiptDataBuildsContainerAfterObjectIdentifierInComplexContainer() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [])
-        let dataObjectIdentifierContainer = containerFactory.buildObjectIdentifierContainer(.data)
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [])
+        let dataObjectIdentifierContainer = containerFactory.objectIdentifierContainer(.data)
 
-        let complexContainer = containerFactory.buildConstructedContainer(containers: [
+        let complexContainer = containerFactory.constructedContainer(containers: [
             containerFactory.simpleDataContainer(),
-            containerFactory.buildObjectIdentifierContainer(.signedData),
-            containerFactory.buildConstructedContainer(containers: [
+            containerFactory.objectIdentifierContainer(.signedData),
+            containerFactory.constructedContainer(containers: [
                 containerFactory.simpleDataContainer(),
-                containerFactory.buildIntContainer(int: 656),
+                containerFactory.intContainer(int: 656),
             ]),
             containerFactory.simpleDataContainer(),
-            containerFactory.buildStringContainer(string: "some string"),
-            containerFactory.buildConstructedContainer(containers: [
+            containerFactory.stringContainer(string: "some string"),
+            containerFactory.constructedContainer(containers: [
                 containerFactory.simpleDataContainer(),
-                containerFactory.buildIntContainer(int: 656),
-                containerFactory.buildConstructedContainer(containers: [
+                containerFactory.intContainer(int: 656),
+                containerFactory.constructedContainer(containers: [
                     dataObjectIdentifierContainer,
                     receiptContainer,
                 ]),
-                containerFactory.buildDateContainer(date: Date()),
+                containerFactory.dateContainer(date: Date()),
             ]),
-            containerFactory.buildObjectIdentifierContainer(.encryptedData),
+            containerFactory.objectIdentifierContainer(.encryptedData),
         ])
 
         mockASN1ContainerBuilder.stubbedBuildResult = complexContainer
@@ -82,9 +82,9 @@ class ReceiptParserTests: XCTestCase {
 
 private extension ReceiptParserTests {
     func containerWithDataObjectIdentifier() -> ASN1Container {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [])
-        let dataObjectIdentifierContainer = containerFactory.buildObjectIdentifierContainer(.data)
-        let constructedContainer = containerFactory.buildConstructedContainer(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [])
+        let dataObjectIdentifierContainer = containerFactory.objectIdentifierContainer(.data)
+        let constructedContainer = containerFactory.constructedContainer(containers: [
             dataObjectIdentifierContainer,
             receiptContainer
         ])

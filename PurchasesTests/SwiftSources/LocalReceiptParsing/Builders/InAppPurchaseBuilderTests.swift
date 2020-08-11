@@ -87,7 +87,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
 
     func testBuildGetsCorrectProductType() {
         let inAppPurchaseContainer = containerFactory
-            .buildInAppPurchaseContainerFromContainers(containers: minimalAttributes() + [productTypeContainer()])
+            .inAppPurchaseContainerFromContainers(containers: minimalAttributes() + [productTypeContainer()])
         let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer)
 
         expect(inAppPurchase.productType) == productType
@@ -95,7 +95,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
 
     func testBuildGetsCorrectExpiresDate() {
         let inAppPurchaseContainer = containerFactory
-            .buildInAppPurchaseContainerFromContainers(containers: minimalAttributes() + [expiresDateContainer()])
+            .inAppPurchaseContainerFromContainers(containers: minimalAttributes() + [expiresDateContainer()])
         let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer)
 
         expect(inAppPurchase.expiresDate) == expiresDate
@@ -103,7 +103,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
 
     func testBuildGetsCorrectCancellationDate() {
         let inAppPurchaseContainer = containerFactory
-            .buildInAppPurchaseContainerFromContainers(containers: minimalAttributes() + [cancellationDateContainer()])
+            .inAppPurchaseContainerFromContainers(containers: minimalAttributes() + [cancellationDateContainer()])
         let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer)
 
         expect(inAppPurchase.cancellationDate) == cancellationDate
@@ -111,7 +111,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
 
     func testBuildGetsCorrectIsInTrialPeriod() {
         let inAppPurchaseContainer = containerFactory
-            .buildInAppPurchaseContainerFromContainers(containers: minimalAttributes() + [isInTrialPeriodContainer()])
+            .inAppPurchaseContainerFromContainers(containers: minimalAttributes() + [isInTrialPeriodContainer()])
         let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer)
 
         expect(inAppPurchase.isInTrialPeriod) == isInTrialPeriod
@@ -119,14 +119,14 @@ class InAppPurchaseBuilderTests: XCTestCase {
 
     func testBuildGetsCorrectPromotionalOfferIdentifier() {
         let inAppPurchaseContainer = containerFactory
-            .buildInAppPurchaseContainerFromContainers(containers: minimalAttributes() + [promotionalOfferIdentifierContainer()])
+            .inAppPurchaseContainerFromContainers(containers: minimalAttributes() + [promotionalOfferIdentifierContainer()])
         let inAppPurchase = try! self.inAppPurchaseBuilder.build(fromContainer: inAppPurchaseContainer)
 
         expect(inAppPurchase.promotionalOfferIdentifier) == promotionalOfferIdentifier
     }
 
     func testBuildThrowsIfQuantityIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             productIdContainer(),
             transactionIdContainer(),
             originalTransactionIdContainer(),
@@ -139,7 +139,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfProductIdIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             transactionIdContainer(),
             originalTransactionIdContainer(),
@@ -152,7 +152,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfTransactionIdIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             originalTransactionIdContainer(),
@@ -165,7 +165,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfOriginalTransactionIdIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             transactionIdContainer(),
@@ -178,7 +178,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfPurchaseDateIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             transactionIdContainer(),
@@ -191,7 +191,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfOriginalPurchaseDateIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             transactionIdContainer(),
@@ -204,7 +204,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfIsInIntroOfferPeriodIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             transactionIdContainer(),
@@ -217,7 +217,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfWebOrderLineItemIdIsMissing() {
-        let inAppPurchaseContainer = containerFactory.buildInAppPurchaseContainerFromContainers(containers: [
+        let inAppPurchaseContainer = containerFactory.inAppPurchaseContainerFromContainers(containers: [
             quantityContainer(),
             productIdContainer(),
             transactionIdContainer(),
@@ -233,7 +233,7 @@ class InAppPurchaseBuilderTests: XCTestCase {
 private extension InAppPurchaseBuilderTests {
 
     func sampleInAppPurchaseContainerWithMinimalAttributes() -> ASN1Container {
-        return containerFactory.buildInAppPurchaseContainerFromContainers(containers: minimalAttributes())
+        return containerFactory.inAppPurchaseContainerFromContainers(containers: minimalAttributes())
     }
 
     func minimalAttributes() -> [ASN1Container] {
@@ -250,67 +250,67 @@ private extension InAppPurchaseBuilderTests {
     }
 
     func quantityContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.quantity,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.quantity,
                                                                quantity)
     }
 
     func productIdContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.productId,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.productId,
                                                                productId)
     }
 
     func transactionIdContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.transactionId,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.transactionId,
                                                                transactionId)
     }
 
     func originalTransactionIdContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.originalTransactionId,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.originalTransactionId,
                                                                originalTransactionId)
     }
 
     func productTypeContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.productType,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.productType,
                                                                productType.rawValue)
     }
 
     func purchaseDateContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.purchaseDate,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.purchaseDate,
                                                                purchaseDate)
     }
 
     func originalPurchaseDateContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.originalPurchaseDate,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.originalPurchaseDate,
                                                                originalPurchaseDate)
     }
 
     func expiresDateContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.expiresDate,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.expiresDate,
                                                                expiresDate)
     }
 
     func cancellationDateContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.cancellationDate,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.cancellationDate,
                                                                cancellationDate)
     }
 
     func isInTrialPeriodContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.isInTrialPeriod,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.isInTrialPeriod,
                                                                isInTrialPeriod)
     }
 
     func isInIntroOfferPeriodContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.isInIntroOfferPeriod,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.isInIntroOfferPeriod,
                                                                isInIntroOfferPeriod)
     }
 
     func webOrderLineItemIdContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.webOrderLineItemId,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.webOrderLineItemId,
                                                                webOrderLineItemId)
     }
 
     func promotionalOfferIdentifierContainer() -> ASN1Container {
-        return containerFactory.buildReceiptAttributeContainer(attributeType: InAppPurchaseAttributeType.promotionalOfferIdentifier,
+        return containerFactory.receiptAttributeContainer(attributeType: InAppPurchaseAttributeType.promotionalOfferIdentifier,
                                                                promotionalOfferIdentifier)
     }
 }

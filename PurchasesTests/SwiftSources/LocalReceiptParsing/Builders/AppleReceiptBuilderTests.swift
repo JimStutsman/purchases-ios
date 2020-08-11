@@ -63,11 +63,11 @@ class AppleReceiptBuilderTests: XCTestCase {
     func testBuildGetsExpiresDate() {
         let expirationDate = Date.from(year: 2020, month: 7, day: 4, hour: 5, minute: 3, second: 2)
         let expirationDateContainer = containerFactory
-            .buildReceiptAttributeContainer(attributeType: ReceiptAttributeType.expirationDate,
+            .receiptAttributeContainer(attributeType: ReceiptAttributeType.expirationDate,
                                             expirationDate)
 
         let receiptContainer = containerFactory
-            .buildReceiptContainerFromContainers(containers: minimalAttributes() + [expirationDateContainer])
+            .receiptContainerFromContainers(containers: minimalAttributes() + [expirationDateContainer])
         let receipt = try! self.appleReceiptBuilder.build(fromContainer: receiptContainer)
         expect(receipt.expirationDate) == expirationDate
     }
@@ -75,11 +75,11 @@ class AppleReceiptBuilderTests: XCTestCase {
     func testBuildGetsInAppPurchases() {
         let totalInAppPurchases = Int.random(in: 5..<20)
         let inAppContainers = (Int(0)..<totalInAppPurchases).map { _ in
-            containerFactory.buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType.inAppPurchase)
+            containerFactory.receiptDataAttributeContainer(attributeType: ReceiptAttributeType.inAppPurchase)
         }
 
         let receiptContainer = containerFactory
-            .buildReceiptContainerFromContainers(containers: minimalAttributes() + inAppContainers)
+            .receiptContainerFromContainers(containers: minimalAttributes() + inAppContainers)
 
         mockInAppPurchaseBuilder.stubbedBuildResult = InAppPurchase(quantity: 2,
                                                                     productId: "com.revenuecat.sometest",
@@ -105,7 +105,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfBundleIdIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             appVersionContainer(),
             originalAppVersionContainer(),
             opaqueValueContainer(),
@@ -116,7 +116,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfAppVersionIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             bundleIdContainer(),
             originalAppVersionContainer(),
             opaqueValueContainer(),
@@ -127,7 +127,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfOriginalAppVersionIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             bundleIdContainer(),
             appVersionContainer(),
             opaqueValueContainer(),
@@ -138,7 +138,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfOpaqueValueIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             bundleIdContainer(),
             appVersionContainer(),
             originalAppVersionContainer(),
@@ -149,7 +149,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfSha1HashIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             bundleIdContainer(),
             appVersionContainer(),
             originalAppVersionContainer(),
@@ -160,7 +160,7 @@ class AppleReceiptBuilderTests: XCTestCase {
     }
 
     func testBuildThrowsIfCreationDateIsMissing() {
-        let receiptContainer = containerFactory.buildReceiptContainerFromContainers(containers: [
+        let receiptContainer = containerFactory.receiptContainerFromContainers(containers: [
             bundleIdContainer(),
             appVersionContainer(),
             originalAppVersionContainer(),
@@ -184,38 +184,38 @@ private extension AppleReceiptBuilderTests {
     }
 
     func sampleReceiptContainerWithMinimalAttributes() -> ASN1Container {
-        return containerFactory.buildReceiptContainerFromContainers(containers: minimalAttributes())
+        return containerFactory.receiptContainerFromContainers(containers: minimalAttributes())
     }
 }
 
 private extension AppleReceiptBuilderTests {
 
     func creationDateContainer() -> ASN1Container {
-        containerFactory.buildReceiptAttributeContainer(attributeType: ReceiptAttributeType.creationDate,
+        containerFactory.receiptAttributeContainer(attributeType: ReceiptAttributeType.creationDate,
                                                         creationDate)
     }
 
     func sha1HashContainer() -> ASN1Container {
-        containerFactory.buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType.sha1Hash)
+        containerFactory.receiptDataAttributeContainer(attributeType: ReceiptAttributeType.sha1Hash)
     }
 
     func opaqueValueContainer() -> ASN1Container {
-        containerFactory.buildReceiptDataAttributeContainer(attributeType: ReceiptAttributeType.opaqueValue)
+        containerFactory.receiptDataAttributeContainer(attributeType: ReceiptAttributeType.opaqueValue)
     }
 
     func originalAppVersionContainer() -> ASN1Container {
         containerFactory
-            .buildReceiptAttributeContainer(attributeType: ReceiptAttributeType.originalApplicationVersion,
+            .receiptAttributeContainer(attributeType: ReceiptAttributeType.originalApplicationVersion,
                                             originalApplicationVersion)
     }
 
     func appVersionContainer() -> ASN1Container {
-        containerFactory.buildReceiptAttributeContainer(attributeType: ReceiptAttributeType.applicationVersion,
+        containerFactory.receiptAttributeContainer(attributeType: ReceiptAttributeType.applicationVersion,
                                                         applicationVersion)
     }
 
     func bundleIdContainer() -> ASN1Container {
-        containerFactory.buildReceiptAttributeContainer(attributeType: ReceiptAttributeType.bundleId,
+        containerFactory.receiptAttributeContainer(attributeType: ReceiptAttributeType.bundleId,
                                                         bundleId)
     }
 }
