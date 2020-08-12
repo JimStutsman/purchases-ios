@@ -189,7 +189,6 @@
 		37E35F20FB949985BEEB4B58 /* MockRequestFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E35609E46E869675A466C1 /* MockRequestFetcher.swift */; };
 		37E35F549AEB655AB6DA83B3 /* MockSKDiscount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E35EABF6D7AFE367718784 /* MockSKDiscount.swift */; };
 		37E35F89A7F467364EAF5640 /* AppleReceiptBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E3553A641AADCAFE25AB3D /* AppleReceiptBuilderTests.swift */; };
-		37E35FAF10261F346F5ECFD8 /* SKProduct+TestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E3564C4ACA1BA520693683 /* SKProduct+TestExtensions.swift */; };
 		37E35FCBAA6368002BF4A661 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37E3567189CF6A746EE3CCC2 /* DateExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -337,7 +336,6 @@
 		37E35609E46E869675A466C1 /* MockRequestFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequestFetcher.swift; sourceTree = "<group>"; };
 		37E35645928A0009F4C105A7 /* MockBackend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockBackend.swift; sourceTree = "<group>"; };
 		37E35648821276317B23462E /* ASN1ObjectIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ASN1ObjectIdentifier.swift; sourceTree = "<group>"; };
-		37E3564C4ACA1BA520693683 /* SKProduct+TestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SKProduct+TestExtensions.swift"; sourceTree = "<group>"; };
 		37E35659EB530A5109AFAB50 /* MockOperationDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockOperationDispatcher.swift; sourceTree = "<group>"; };
 		37E3567189CF6A746EE3CCC2 /* DateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		37E3567271C2172DA3ED1B16 /* RCAttributionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAttributionData.h; sourceTree = "<group>"; };
@@ -812,7 +810,6 @@
 			children = (
 				37E35C4A4B241A545D1D06BD /* ASN1ObjectIdentifierEncoder.swift */,
 				37E35092F0E41512E0D610BA /* ContainerFactory.swift */,
-				37E3564C4ACA1BA520693683 /* SKProduct+TestExtensions.swift */,
 			);
 			path = TestHelpers;
 			sourceTree = "<group>";
@@ -1257,7 +1254,6 @@
 				37E35EDA5BAF7112FC2EAFC2 /* ContainerFactory.swift in Sources */,
 				37E35096F00109F827375249 /* MockProductsManager.swift in Sources */,
 				37E3566468428D32D732D625 /* MockReceiptParser.swift in Sources */,
-				37E35FAF10261F346F5ECFD8 /* SKProduct+TestExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

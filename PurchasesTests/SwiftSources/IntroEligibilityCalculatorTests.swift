@@ -64,7 +64,9 @@ class IntroEligibilityCalculatorTests: XCTestCase {
         mockReceiptParser.stubbedParseResult = receipt
         let receiptIdentifiers = receipt.purchasedIntroOfferOrFreeTrialProductIdentifiers()
 
-        mockProductsManager.stubbedProductsCompletionResult = Set(["a", "b"].map { SKProduct(productIdentifier: $0) })
+        mockProductsManager.stubbedProductsCompletionResult = Set(["a", "b"].map {
+            MockSKProduct(mockProductIdentifier: $0)
+        })
 
         let candidateIdentifiers = Set(["a", "b", "c"])
         calculator.checkTrialOrIntroductoryPriceEligibility(with: Data(),
@@ -85,10 +87,10 @@ class IntroEligibilityCalculatorTests: XCTestCase {
         let receipt = mockReceipt()
         mockReceiptParser.stubbedParseResult = receipt
         mockProductsManager.stubbedProductsCompletionResult = Set([
-                                                                      SKProduct(productIdentifier: "com.revenuecat.product1",
-                                                                                subscriptionGroupId: "group1"),
-                                                                      SKProduct(productIdentifier: "com.revenuecat.product2",
-                                                                                subscriptionGroupId: "group2")
+                                                                      MockSKProduct(mockProductIdentifier: "com.revenuecat.product1",
+                                                                                    mockSubscriptionGroupIdentifier: "group1"),
+                                                                      MockSKProduct(mockProductIdentifier: "com.revenuecat.product2",
+                                                                                    mockSubscriptionGroupIdentifier: "group2")
                                                                   ])
 
         let candidateIdentifiers = Set(["com.revenuecat.product1",
@@ -96,10 +98,10 @@ class IntroEligibilityCalculatorTests: XCTestCase {
                                         "com.revenuecat.unknownProduct"])
 
         calculator.checkTrialOrIntroductoryPriceEligibility(with: Data(),
-                                                            productIdentifiers: Set(candidateIdentifiers)) { eligibilityByProductId, error in
+                                                            productIdentifiers: Set(candidateIdentifiers)) { eligibility, error in
             completionCalled = true
             receivedError = error
-            receivedEligibility = eligibilityByProductId
+            receivedEligibility = eligibility
         }
 
         expect(completionCalled).toEventually(beTrue())
