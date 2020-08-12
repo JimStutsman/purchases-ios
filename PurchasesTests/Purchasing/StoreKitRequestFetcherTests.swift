@@ -16,46 +16,6 @@ import Purchases
 
 class StoreKitRequestFetcher: XCTestCase {
 
-    class MockProductResponse: SKProductsResponse {
-        var mockProducts: [MockSKProduct]
-        init(productIdentifiers: Set<String>) {
-            self.mockProducts = productIdentifiers.map { identifier in
-                return MockSKProduct(mockProductIdentifier: identifier)
-            }
-            super.init()
-        }
-
-        override var products: [SKProduct] {
-            return self.mockProducts
-        }
-    }
-
-    enum StoreKitError: Error {
-        case unknown
-    }
-
-    class MockProductRequest: SKProductsRequest {
-        var startCalled = false
-        var requestedIdentifiers: Set<String>
-        var fails = false
-
-        override init(productIdentifiers: Set<String>) {
-            self.requestedIdentifiers = productIdentifiers
-            super.init()
-        }
-
-        override func start() {
-            startCalled = true
-            DispatchQueue.main.async {
-                if (self.fails) {
-                    self.delegate?.request!(self, didFailWithError: StoreKitError.unknown)
-                } else {
-                    self.delegate?.productsRequest(self, didReceive: MockProductResponse(productIdentifiers: self.requestedIdentifiers))
-                }
-            }
-        }
-    }
-
     class MockReceiptRequest: SKReceiptRefreshRequest {
         var startCalled = false
         var fails = false
@@ -70,7 +30,6 @@ class StoreKitRequestFetcher: XCTestCase {
             }
         }
     }
-
 
     class MockRequestsFactory: RCProductsRequestFactory {
         let fails: Bool

@@ -1,0 +1,24 @@
+//
+// Created by Andrés Boedo on 8/12/20.
+// Copyright (c) 2020 Purchases. All rights reserved.
+//
+
+import Foundation
+
+@testable import Purchases
+class MockProductsRequestFactory: ProductsRequestFactory {
+
+    var invokedRequest = false
+    var invokedRequestCount = 0
+    var invokedRequestParameters: (productsIdentifiers: Set<String>, Void)?
+    var invokedRequestParametersList = [(productsIdentifiers: Set < String>, Void)]()
+    var stubbedRequestResult: MockProductRequest!
+
+    override func request(productIdentifiers: Set<String>) -> SKProductsRequest {
+        invokedRequest = true
+        invokedRequestCount += 1
+        invokedRequestParameters = (productIdentifiers, ())
+        invokedRequestParametersList.append((productIdentifiers, ()))
+        return stubbedRequestResult ?? MockProductRequest(productIdentifiers: productIdentifiers)
+    }
+}
