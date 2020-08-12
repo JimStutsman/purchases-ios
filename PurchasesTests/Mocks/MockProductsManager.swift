@@ -11,17 +11,17 @@ class MockProductsManager: ProductsManager {
 
     var invokedProducts = false
     var invokedProductsCount = 0
-    var invokedProductsParameters: (identifiers: Set<String>, Void)?
-    var invokedProductsParametersList = [(identifiers: Set < String>, Void)]()
-    var stubbedProductsCompletionResult: (Set<SKProduct>, Void)?
+    var invokedProductsParameters: Set<String>?
+    var invokedProductsParametersList = [Set<String>]()
+    var stubbedProductsCompletionResult: Set<SKProduct>?
 
     override func products(withIdentifiers identifiers: Set<String>, completion: @escaping (Set<SKProduct>) -> Void) {
         invokedProducts = true
         invokedProductsCount += 1
-        invokedProductsParameters = (identifiers, ())
-        invokedProductsParametersList.append((identifiers, ()))
+        invokedProductsParameters = identifiers
+        invokedProductsParametersList.append(identifiers)
         if let result = stubbedProductsCompletionResult {
-            completion(result.0)
+            completion(result)
         }
     }
 }

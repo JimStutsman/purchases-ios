@@ -55,20 +55,23 @@ class IntroEligibilityCalculatorTests: XCTestCase {
     }
 
     func testCheckTrialOrIntroductoryPriceEligibilityMakesOnlyOneProductsRequest() {
-        var receivedError: Error? = nil
-        var receivedEligibility: [String: NSNumber]? = nil
         var completionCalled = false
+
+        let receipt = mockReceipt()
+        mockReceiptParser.stubbedParseResult = receipt
+        let receiptIdentifiers = receipt.purchasedIntroOfferOrFreeTrialProductIdentifiers()
+
+        mockProductsManager.stubbedProductsCompletionResult = Set(["a", "b"].map { SKProduct(productIdentifier: $0) })
+
+        let candidateIdentifiers = Set(["a", "b", "c"])
         calculator.checkTrialOrIntroductoryPriceEligibility(with: Data(),
-                                                            productIdentifiers: Set()) { eligibilityByProductId, error in
+                                                            productIdentifiers: Set(candidateIdentifiers)) { eligibilityByProductId, error in
             completionCalled = true
-            receivedError = error
-            receivedEligibility = eligibilityByProductId
         }
 
         expect(completionCalled).toEventually(beTrue())
-        expect(receivedError).to(beNil())
-        expect(receivedEligibility).toNot(beNil())
-        expect(receivedEligibility).to(beEmpty())
+        expect(self.mockProductsManager.invokedProductsCount) == 1
+        expect(self.mockProductsManager.invokedProductsParameters) == candidateIdentifiers.union(receiptIdentifiers)
     }
 }
 
