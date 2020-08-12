@@ -42,6 +42,7 @@ private extension ReceiptParser {
                 if internalContainer.containerIdentifier == .objectIdentifier {
                     let objectIdentifier = objectIdentifierParser.build(fromPayload: internalContainer.internalPayload)
                     if objectIdentifier == objectId && index < container.internalContainers.count - 1 {
+                        // the container that holds the data comes right after the one with the object identifier
                         return container.internalContainers[index + 1]
                     }
                 } else {

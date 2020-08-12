@@ -11,6 +11,7 @@ class AppleReceiptBuilder {
     private let dateFormatter: ISO3601DateFormatter
 
     private let typeContainerIndex = 0
+    private let versionContainerIndex = 1 // unused
     private let attributeTypeContainerIndex = 2
     private let expectedInternalContainersCount = 3 // type + version + attribute
 
