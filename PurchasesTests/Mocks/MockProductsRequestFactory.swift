@@ -6,19 +6,20 @@
 import Foundation
 
 @testable import Purchases
+
 class MockProductsRequestFactory: ProductsRequestFactory {
 
     var invokedRequest = false
     var invokedRequestCount = 0
-    var invokedRequestParameters: (productsIdentifiers: Set<String>, Void)?
-    var invokedRequestParametersList = [(productsIdentifiers: Set < String>, Void)]()
+    var invokedRequestParameters: Set<String>?
+    var invokedRequestParametersList = [Set<String>]()
     var stubbedRequestResult: MockProductRequest!
 
     override func request(productIdentifiers: Set<String>) -> SKProductsRequest {
         invokedRequest = true
         invokedRequestCount += 1
-        invokedRequestParameters = (productIdentifiers, ())
-        invokedRequestParametersList.append((productIdentifiers, ()))
+        invokedRequestParameters = productIdentifiers
+        invokedRequestParametersList.append(productIdentifiers)
         return stubbedRequestResult ?? MockProductRequest(productIdentifiers: productIdentifiers)
     }
 }

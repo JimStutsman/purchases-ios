@@ -74,9 +74,9 @@ extension ProductsManager: SKProductsRequestDelegate {
         queue.async { [self] in
             NSLog("products request failed! error: \(error.localizedDescription)")
             guard let products = self.productsByRequests[request] else { fatalError("couldn't find request") }
-            guard let completionBlocks = self.completionHandlers[
-                products
-                ] else { fatalError("couldn't find completion") }
+            guard let completionBlocks = self.completionHandlers[products] else {
+                fatalError("couldn't find completion")
+            }
 
             self.completionHandlers.removeValue(forKey: products)
             self.productsByRequests.removeValue(forKey: request)
