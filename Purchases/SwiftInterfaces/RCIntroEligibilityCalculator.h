@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NS_SWIFT_NAME(IntroEligibilityCalculator)
+NS_SWIFT_NAME(Purchases.IntroEligibilityCalculator)
 @interface RCIntroEligibilityCalculator : NSObject
 
 - (void)checkTrialOrIntroductoryPriceEligibilityWithData:(NSData *)receiptData

@@ -7,9 +7,9 @@
 //
 
 import Foundation
-import Purchases
+@testable import Purchases
 
-class MockIntroEligibilityCalculator: IntroEligibilityCalculator {
+class MockIntroEligibilityCalculator: Purchases.IntroEligibilityCalculator {
 
     var invokedCheckTrialOrIntroductoryPriceEligibility = false
     var invokedCheckTrialOrIntroductoryPriceEligibilityCount = 0
