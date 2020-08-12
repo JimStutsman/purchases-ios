@@ -69,10 +69,9 @@ private extension IntroEligibilityCalculator {
         for candidate in candidateProducts {
             let usedIntroForProductIdentifier = purchasedProductsWithIntroOffers
                 .contains { purchased in
-                    let foundByProductId = candidate.productIdentifier == purchased.productIdentifier
-                    let foundByGroupId = candidate.subscriptionGroupIdentifier == purchased.subscriptionGroupIdentifier
-                        && candidate.subscriptionGroupIdentifier != nil
-                    return foundByProductId || foundByGroupId
+                    let foundByGroupId = (candidate.subscriptionGroupIdentifier != nil
+                        && candidate.subscriptionGroupIdentifier == purchased.subscriptionGroupIdentifier)
+                    return foundByGroupId
                 }
             result[candidate.productIdentifier] = usedIntroForProductIdentifier
                 ? IntroEligibilityStatus.ineligible.toNSNumber()

@@ -6,8 +6,10 @@
 import Foundation
 
 extension SKProduct {
-    convenience init(productIdentifier: String) {
+    convenience init(productIdentifier: String,
+                     subscriptionGroupId: String? = nil) {
         self.init()
         self.setValue(productIdentifier, forKey: "productIdentifier")
+        self.setValue(subscriptionGroupId, forKey: "subscriptionGroupIdentifier")
     }
 }
