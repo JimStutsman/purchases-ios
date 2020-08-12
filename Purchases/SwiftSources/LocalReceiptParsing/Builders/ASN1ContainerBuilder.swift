@@ -26,12 +26,7 @@ class ASN1ContainerBuilder {
         let internalPayload = payload.dropFirst(bytesUsedForMetadata).prefix(length.value)
         var internalContainers: [ASN1Container] = []
         if encodingType == .constructed {
-            var currentPayload = internalPayload
-            while (currentPayload.count > 0) {
-                let internalContainer = try build(fromPayload: currentPayload)
-                internalContainers.append(internalContainer)
-                currentPayload = currentPayload.dropFirst(internalContainer.totalBytesUsed)
-            }
+            internalContainers = try buildInternalContainers(payload: internalPayload)
         }
         return ASN1Container(containerClass: containerClass,
                              containerIdentifier: containerIdentifier,
@@ -43,6 +38,17 @@ class ASN1ContainerBuilder {
 }
 
 private extension ASN1ContainerBuilder {
+
+    func buildInternalContainers(payload: ArraySlice<UInt8>) throws -> [ASN1Container] {
+        var internalContainers = [ASN1Container]()
+        var currentPayload = payload
+        while (currentPayload.count > 0) {
+            let internalContainer = try build(fromPayload: currentPayload)
+            internalContainers.append(internalContainer)
+            currentPayload = currentPayload.dropFirst(internalContainer.totalBytesUsed)
+        }
+        return internalContainers
+    }
 
     func extractClass(byte: UInt8) throws -> ASN1Class {
         let firstTwoBits = byte.valueInRange(from: 0, to: 1)
