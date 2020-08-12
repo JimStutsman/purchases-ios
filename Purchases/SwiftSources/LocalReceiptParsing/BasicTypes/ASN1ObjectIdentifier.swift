@@ -5,6 +5,7 @@
 
 import Foundation
 
+// http://www.umich.edu/~x509/ssleay/asn1-oids.html
 enum ASN1ObjectIdentifier: String {
     case data = "1.2.840.113549.1.7.1"
     case signedData = "1.2.840.113549.1.7.2"
