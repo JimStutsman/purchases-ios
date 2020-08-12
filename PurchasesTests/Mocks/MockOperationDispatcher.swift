@@ -5,9 +5,9 @@
 
 import Foundation
 
-import Purchases
+@testable import Purchases
 
-class MockOperationDispatcher: OperationDispatcher {
+class MockOperationDispatcher: Purchases.OperationDispatcher {
     override func dispatch(onMainThread block: @escaping () -> ()) {
         block()
     }

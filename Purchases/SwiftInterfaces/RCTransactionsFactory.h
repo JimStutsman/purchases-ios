@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class RCTransaction;
 
+NS_SWIFT_NAME(Purchases.TransactionsFactory)
 @interface RCTransactionsFactory: NSObject
 
 - (NSArray <RCTransaction *> *) nonSubscriptionTransactionsWithSubscriptionsData:(NSDictionary *)subscriptionsData
