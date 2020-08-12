@@ -74,5 +74,20 @@ class ProductsManagerTests: XCTestCase {
     }
 
     func testProductsWithIdentifiersReturnsErrorAndEmptySetIfRequestFails() {
+        let productIdentifiers = Set(["1", "2", "3"])
+
+        let failingRequest = MockProductsRequest(productIdentifiers: productIdentifiers)
+        failingRequest.fails = true
+        productsRequestFactory.stubbedRequestResult = failingRequest
+
+        var receivedProducts: Set<SKProduct>?
+        var completionCalled = false
+
+        productsManager.products(withIdentifiers: productIdentifiers) { products in
+            completionCalled = true
+            receivedProducts = products
+        }
+        expect(completionCalled).toEventually(beTrue())
+        expect(receivedProducts).to(beEmpty())
     }
 }

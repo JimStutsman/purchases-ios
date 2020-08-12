@@ -40,7 +40,7 @@ class StoreKitRequestFetcher: XCTestCase {
 
         var requests: [SKRequest] = []
         override func request(forProductIdentifiers identifiers: Set<String>) -> SKProductsRequest {
-            let r = MockProductRequest(productIdentifiers:identifiers)
+            let r = MockProductsRequest(productIdentifiers:identifiers)
             requests.append(r)
             r.fails = self.fails
             return r
@@ -94,7 +94,7 @@ class StoreKitRequestFetcher: XCTestCase {
 
     func testCallsStartOnRequest() {
         setupFetcher(fails: false)
-        expect((self.factory!.requests[0] as! MockProductRequest).startCalled).toEventually(beTrue(), timeout: 1.0)
+        expect((self.factory!.requests[0] as! MockProductsRequest).startCalled).toEventually(beTrue(), timeout: 1.0)
     }
 
     func testReturnsProducts() {

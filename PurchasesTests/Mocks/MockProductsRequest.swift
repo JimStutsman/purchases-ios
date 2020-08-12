@@ -24,7 +24,7 @@ enum StoreKitError: Error {
     case unknown
 }
 
-class MockProductRequest: SKProductsRequest {
+class MockProductsRequest: SKProductsRequest {
     var startCalled = false
     var requestedIdentifiers: Set<String>
     var fails = false
