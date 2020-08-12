@@ -8,6 +8,7 @@
 
 import Foundation
 
+// https://developer.apple.com/library/archive/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html
 struct ReceiptAttribute {
     let type: ReceiptAttributeType
     let version: Int

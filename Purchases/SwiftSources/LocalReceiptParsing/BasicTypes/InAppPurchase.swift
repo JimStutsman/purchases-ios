@@ -5,6 +5,7 @@
 
 import Foundation
 
+// https://developer.apple.com/library/archive/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html
 enum InAppPurchaseAttributeType: Int {
     case quantity = 1701,
          productId = 1702,
