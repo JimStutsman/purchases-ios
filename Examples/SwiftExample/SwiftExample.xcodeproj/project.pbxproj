@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		3493336B21E69360007AAAB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3493336921E69360007AAAB9 /* LaunchScreen.storyboard */; };
 		3493337521E694D6007AAAB9 /* CatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3493337421E694D6007AAAB9 /* CatsViewController.swift */; };
 		34D05817233C1A3700343134 /* SwiftPaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D05816233C1A3700343134 /* SwiftPaywall.swift */; };
+		385A838124E5839400DD190B /* Purchases in Frameworks */ = {isa = PBXBuildFile; productRef = 385A838024E5839400DD190B /* Purchases */; };
 		41223BBC2C9D443988BB8DE0 /* libPods-WatchExample Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D0C275B4B2F174BACA291F /* libPods-WatchExample Extension.a */; };
 		612312EC8EFEAE0D4472F1D9 /* libPods-SwiftExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D95AC7213243D08744E89F6 /* libPods-SwiftExample.a */; };
 /* End PBXBuildFile section */
@@ -130,6 +131,7 @@
 				2D6FCB222437E56200C398CF /* StoreKit.framework in Frameworks */,
 				2D95540F240EF9F100289461 /* UserNotifications.framework in Frameworks */,
 				612312EC8EFEAE0D4472F1D9 /* libPods-SwiftExample.a in Frameworks */,
+				385A838124E5839400DD190B /* Purchases in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +279,9 @@
 				2D54BF7D2437DEDA00FF4EE4 /* PBXTargetDependency */,
 			);
 			name = SwiftExample;
+			packageProductDependencies = (
+				385A838024E5839400DD190B /* Purchases */,
+			);
 			productName = SwiftExample;
 			productReference = 3493335D21E6935F007AAAB9 /* SwiftExample.app */;
 			productType = "com.apple.product-type.application";
@@ -312,6 +317,9 @@
 				Base,
 			);
 			mainGroup = 3493335421E6935E007AAAB9;
+			packageReferences = (
+				385A837F24E5839400DD190B /* XCRemoteSwiftPackageReference "purchases-ios" */,
+			);
 			productRefGroup = 3493335E21E6935F007AAAB9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -757,6 +765,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		385A837F24E5839400DD190B /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		385A838024E5839400DD190B /* Purchases */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 385A837F24E5839400DD190B /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			productName = Purchases;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3493335521E6935E007AAAB9 /* Project object */;
 }
